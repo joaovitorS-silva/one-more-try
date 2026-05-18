@@ -1,5 +1,5 @@
 # One More Try
-### *"You only need one more try."*
+
 
 ---
 
@@ -54,10 +54,10 @@ Não há inimigos físicos no jogo. Os verdadeiros adversários de PeLezin são:
 |-----------------------|------------------------------------------------------------------------------|--------------------------------------------|
 | **Questões fáceis**   | Estáticas, apresentadas na tela de prova                                    | Erro = −pontos (penalidade maior que difícil) |
 | **Questões médias**   | Estáticas, com grau intermediário                                           | Erro = −pontos médios                      |
-| **Questões difíceis** | Estáticas, maior complexidade                                               | Erro = −pontos menores (crueldade pedagógica invertida) |
+| **Questões difíceis** | Estáticas, maior complexidade                                               | Erro = −pontos menores |
 | **O tempo**           | Pressão psicológica — a dificuldade vai aumentando progressivamente         | Aumenta o estresse do jogador               |
 
-> **Crueldade Pedagógica:** Errar uma questão fácil custa mais pontos do que errar uma difícil. Não tem desculpa pra errar o que é básico.
+
 
 ---
 
