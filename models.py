@@ -6,5 +6,3 @@ class Personagem():
 class Pelezin(Personagem):  
      
 # testando a branch
-teste = False
-print(!2312i3j1i23)
