@@ -6,3 +6,6 @@ class Personagem():
 class Pelezin(Personagem):  
      
 # testando a branch
+]
+def naoseitext():
+    pass
