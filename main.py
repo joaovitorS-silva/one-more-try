@@ -1,5 +1,5 @@
 import pygame
-#linha teste(()#(*$@)#(*$)(@#*$)(@#*))
+
 pygame.init()
 
 LARGURA, ALTURA = 800, 600
@@ -26,3 +26,15 @@ while rodando:
     clock.tick(FPS)
 
 pygame.quit()
+dasçda
+setd
+as
+da
+sd
+as
+d
+as
+d
+asd
+a
+d
