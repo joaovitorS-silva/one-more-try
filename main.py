@@ -1,5 +1,5 @@
 import pygame
-
+#linha teste(()#(*$@)#(*$)(@#*$)(@#*))
 pygame.init()
 
 LARGURA, ALTURA = 800, 600
