@@ -1,40 +1,14 @@
-import pygame
-
-pygame.init()
-
-LARGURA, ALTURA = 800, 600
-tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption('One More Try')
-
-PRETO = (0, 0, 0)
-BRANCO = (255, 255, 255)
-
-clock = pygame.time.Clock()
-FPS = 60
-
-rodando = True
-while rodando:
-    
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            rodando = False
+import pygame 
+from settings import rodando , tela
+import settings
 
 
-    tela.fill(PRETO)
 
-    pygame.display.flip()
-    clock.tick(FPS)
 
-pygame.quit()
-dasçda
-setd
-as
-da
-sd
-as
-d
-as
-d
-asd
-a
-d
+botao_jogar =pygame.rect(300, 255, 200, 50) 
+pygame.draw.rect(tela,255,0,0 ,botao_jogar )
+
+
+
+pygame.display.init()
+pygame.display.get_init()
