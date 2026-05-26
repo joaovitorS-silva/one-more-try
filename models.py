@@ -48,6 +48,22 @@ class Perguntas_Dificeis(questoes):
         super().__init__(dificuldade_perguntas, pontucao_perguntas, opcoes_perguntas)
   
 
+class BotoesInit():
+    def __init__(self, x, y, cor , largura , altura):
+        self.x = x
+        self.y = y
+        self.cor = cor
+        self.largura = largura
+        self.altura = altura
+       
+        
+    def desenhar(self, tela):
+
+        retangulo =  pygame.Rect(self.x, self.y,self.largura,self.altura)
+        pygame.draw.rect(tela,(255,0,0), retangulo)
+        
+    
+
 
 
 
