@@ -12,7 +12,7 @@ def _get_fonte():
     return _fonte
 
 
-class Botao:
+class Botao: 
     def __init__(self, texto, x, y, largura, altura):
         self.texto  = texto
         self.rect   = pygame.Rect(x, y, largura, altura)

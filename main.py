@@ -3,7 +3,8 @@ import sys
 
 from settings import LARGURA, ALTURA, FPS, TITULO, PRETO
 from botoes_tela_inicial import Botao
-
+# from cena import TelaJogo
+from cena import TelaQuarto
 
 class TelaInicial:
     """Tela de menu principal — Jogar, Opções, Sair."""
@@ -25,10 +26,12 @@ class TelaInicial:
     def _jogar(self):
         print("Iniciando jogo...")
         # TODO: self.game.trocar_cena(TelaJogo(self.game))
-
+        self.game.trocar_cena(TelaQuarto(self.game))
+        
     def _opcoes(self):
         print("Abrindo opções...")
         # TODO: self.game.trocar_cena(TelaOpcoes(self.game))
+
 
     def processar_eventos(self, eventos):
         for evento in eventos:
