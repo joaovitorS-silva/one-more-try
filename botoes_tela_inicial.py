@@ -1,33 +1,37 @@
 import pygame
+from settings import PRETO, BRANCO, CINZA
 
-PRETO = (0, 0, 0)
-BRANCO = (255, 255, 255)
-CINZA = (220, 220, 220)
+_fonte = None
 
-fonte = None  
 
-class Botao:
+def _get_fonte():
+    """Inicializa a fonte apenas quando o pygame já estiver rodando."""
+    global _fonte
+    if _fonte is None:
+        _fonte = pygame.font.SysFont("arial", 32, bold=True)
+    return _fonte
+
+
+class Botao: 
     def __init__(self, texto, x, y, largura, altura):
-        self.texto = texto
-        self.rect = pygame.Rect(x, y, largura, altura)
-        self.hover = False
+        self.texto  = texto
+        self.rect   = pygame.Rect(x, y, largura, altura)
+        self.hover  = False
 
     def desenhar(self, tela):
-        global fonte
-        if fonte is None:
-            fonte = pygame.font.SysFont("arial", 32, bold=True)
-
         cor = CINZA if self.hover else BRANCO
         pygame.draw.rect(tela, cor, self.rect, border_radius=20)
+
+        fonte      = _get_fonte()
         texto_surf = fonte.render(self.texto, True, PRETO)
-        texto_rect = texto_surf.get_rect(center=self.rect.center)
-        tela.blit(texto_surf, texto_rect)
+        tela.blit(texto_surf, texto_surf.get_rect(center=self.rect.center))
 
     def verificar_hover(self, pos_mouse):
         self.hover = self.rect.collidepoint(pos_mouse)
 
     def clicado(self, evento):
-        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            return self.rect.collidepoint(evento.pos)
-        return False
-
+        return (
+            evento.type == pygame.MOUSEBUTTONDOWN
+            and evento.button == 1
+            and self.rect.collidepoint(evento.pos)
+        )
