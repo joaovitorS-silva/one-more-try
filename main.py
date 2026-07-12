@@ -21,28 +21,11 @@ while rodando:
             rodando = False
 
 
-     
-     
-    
-    botao.desenhar(tela)
-    
-
-
-    pygame.display.flip()
-    clock.tick(FPS)
-    tela.fill(PRETO)
-
-pygame.quit()
-
-
-
-
-
 bx = LARGURA // 2 - 150
 botoes = [
-    Botao("Jogar",  bx, 120, 300, 60),
-    Botao("Opções", bx, 200, 300, 60),
-    Botao("Sair",   bx, 280, 300, 60),
+    BotoesInit("Jogar",  bx, 120, 300, 60),
+    BotoesInit("Opções", bx, 200, 300, 60),
+    BotoesInit("Sair",   bx, 280, 300, 60),
 ]
 
 rodando = True
