@@ -1,74 +1,53 @@
 import pygame
+import sys
+
+from settings import LARGURA, ALTURA, FPS, TITULO, PRETO
+from botoes_tela_inicial import Botao
+# from cena import TelaJogo
+from cena import TelaQuarto
+
+class TelaInicial:
+    """Tela de menu principal — Jogar, Opções, Sair."""
+
+    def __init__(self, game):
+        self.game = game
+        bx = LARGURA // 2 - 150
+        self.botoes = [
+            Botao("Jogar",  bx, 120, 300, 60),
+            Botao("Opções", bx, 200, 300, 60),
+            Botao("Sair",   bx, 280, 300, 60),
+        ]
+        self.acoes = {
+            "Jogar":  self._jogar,
+            "Opções": self._opcoes,
+            "Sair":   self.game.sair,
+        }
+
+    def _jogar(self):
+        print("Iniciando jogo...")
+        # TODO: self.game.trocar_cena(TelaJogo(self.game))
+        self.game.trocar_cena(TelaQuarto(self.game))
+        
+    def _opcoes(self):
+        print("Abrindo opções...")
+        # TODO: self.game.trocar_cena(TelaOpcoes(self.game))
 
 
-pygame.init()
+    def processar_eventos(self, eventos):
+        for evento in eventos:
+            for botao in self.botoes:
+                if botao.clicado(evento):
+                    self.acoes[botao.texto]()
 
-LARGURA, ALTURA = 800, 600
-tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption('One More Try')
+    def atualizar(self):
+        pos_mouse = pygame.mouse.get_pos()
+        for botao in self.botoes:
+            botao.verificar_hover(pos_mouse)
 
-PRETO = (0, 0, 0)
-BRANCO = (255, 255, 255)
-
-clock = pygame.time.Clock()
-FPS = 60
-
-rodando = True
-while rodando:
-    
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            rodando = False
-
-
-     
-     
-    
-    
-    
-
-
-    pygame.display.flip()
-    clock.tick(FPS)
-    tela.fill(PRETO)
-
-pygame.quit()
-
-
-
-
-
-bx = LARGURA // 2 - 150
-botoes = [
-    Botao("Jogar",  bx, 120, 300, 60),
-    Botao("Opções", bx, 200, 300, 60),
-    Botao("Sair",   bx, 280, 300, 60),
-]
-
-rodando = True
-while rodando:
-    pos_mouse = pygame.mouse.get_pos()
-
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            rodando = False
-
-        for botao in botoes:
-            if botao.clicado(evento):
-                if botao.texto == "Jogar":
-                    print("Iniciando jogo...")
-                elif botao.texto == "Opções":
-                    print("Abrindo opções...")
-                elif botao.texto == "Sair":
-                    pygame.quit()
-                    quit()
-
-    tela.fill(PRETO)
-
-  
-    for botao in botoes:
-        botao.verificar_hover(pos_mouse)
-        botao.desenhar(tela)
+    def desenhar(self, tela):
+        tela.fill(PRETO)
+        for botao in self.botoes:
+            botao.desenhar(tela)
 
 
 class Game:
