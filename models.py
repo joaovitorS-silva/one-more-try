@@ -4,7 +4,7 @@ from settings import PONTOS_FACIL_ERRO, PONTOS_MEDIO_ERRO, PONTOS_DIFICIL_ERRO
 
 
 # ── Personagens ───────────────────────────────────────────────────────────────
-
+#possivel classe abstrata)()()()9
 class Personagem:
     def __init__(self, nome, velocidade, x, y):
         self.nome       = nome
