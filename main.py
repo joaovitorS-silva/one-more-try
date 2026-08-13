@@ -1,4 +1,4 @@
-import pygame
+ximport pygame
 import sys
 
 from settings import LARGURA, ALTURA, FPS, TITULO, PRETO
