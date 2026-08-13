@@ -1,13 +1,3 @@
-{
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  "python-envs.defaultEnvManager": "ms-python.python:system"
+{ "python-envs.defaultEnvManager": "ms-python.python:venv"
 }
-=======
-    "python-envs.defaultEnvManager": "ms-python.python:system"
-}
->>>>>>> Stashed changes
-=======
-    "python-envs.defaultEnvManager": "ms-python.python:venv"
-}
->>>>>>> fe076bc649e3ef31612183dd37015faace45f3a1
+
