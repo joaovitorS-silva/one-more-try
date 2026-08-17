@@ -32,33 +32,36 @@ class Professor(Personagem):
 
 class Questao:
     """Classe base para todas as questões da prova."""
-    def __init__(self, dificuldade, pontuacao_acerto, pontuacao_erro, opcoes):
+    def __init__(self, dificuldade, pontuacao_acerto, pontuacao_erro, opcoes, enunciado, correta):
         self.dificuldade      = dificuldade
         self.pontuacao_acerto = pontuacao_acerto
         self.pontuacao_erro   = pontuacao_erro
-        self.opcoes           = opcoes  # lista de alternativas A-D
+        self.opcoes           = opcoes  
+        self.enunciado        = enunciado
+        self.correta          = correta  
 
+        if not (0 <= correta < len(opcoes)):
+            raise ValueError(f"'correta'={correta} fora do intervalo de opções (0-{len(opcoes) - 1})")
 
 class PerguntaFacil(Questao):
-    def __init__(self, opcoes):
-        super().__init__("facil", PONTOS_FACIL_ACERTO, PONTOS_FACIL_ERRO, opcoes)
-
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("facil", PONTOS_FACIL_ACERTO, PONTOS_FACIL_ERRO, opcoes, enunciado, correta)
 
 class PerguntaMedia(Questao):
-    def __init__(self, opcoes):
-        super().__init__("media", PONTOS_MEDIO_ACERTO, PONTOS_MEDIO_ERRO, opcoes)
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("media", PONTOS_MEDIO_ACERTO, PONTOS_MEDIO_ERRO, opcoes, enunciado, correta)
 
 
 class PerguntaDificil(Questao):
-    def __init__(self, opcoes):
-        super().__init__("dificil", PONTOS_DIFICIL_ACERTO, PONTOS_DIFICIL_ERRO, opcoes)
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("dificil", PONTOS_DIFICIL_ACERTO, PONTOS_DIFICIL_ERRO, opcoes, enunciado, correta)
 
 
 # ── Prova ─────────────────────────────────────────────────────────────────────
 
 class Prova:
     def __init__(self, questoes):
-        self.questoes       = questoes  # lista de objetos Questao
+        self.questoes       = questoes  
         self.pontuacao_total = 0
 
     def responder(self, questao, acertou):
