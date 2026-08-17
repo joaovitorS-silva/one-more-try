@@ -22,10 +22,44 @@ class Pelezin(Personagem):
 
 
 class Professor(Personagem):
-    def __init__(self, estado_emocional, velocidade, x, y):
+    def __init__(self, velocidade, x, y, vida_maxima=100):
         super().__init__("Joaildo", velocidade, x, y)
         self.rect             = pygame.Rect(x, y, 32, 32)
-        self.estado_emocional = estado_emocional  # False = normal | True = raiva
+        self.vida_atual       = vida_maxima
+        self.vida_maxima      = vida_maxima
+        self.direcao          = 1  # 1 = direita, -1 = esquerda
+        self.x_min            = 100  # Limite esquerdo de patrulha
+        self.x_max            = 700  # Limite direito de patrulha
+        self.campo_visao_raio = 150  # Raio do campo de visão
+    
+    def atualizar(self, delta_time=1):
+        """Atualiza posição do professor na patrulha."""
+        self.rect.x += self.velocidade * self.direcao * delta_time
+        
+        # Inverte direção ao atingir limites
+        if self.rect.x <= self.x_min or self.rect.x >= self.x_max:
+            self.direcao *= -1
+    
+    def receber_dano(self, dano):
+        """Diminui vida do professor."""
+        self.vida_atual = max(0, self.vida_atual - dano)
+    
+    def recuperar_vida(self, quantidade):
+        """Aumenta vida do professor (quando aluno erra)."""
+        self.vida_atual = min(self.vida_maxima, self.vida_atual + quantidade)
+    
+    def esta_morto(self):
+        """Retorna True se professor perdeu toda a vida."""
+        return self.vida_atual <= 0
+
+
+class NPC(Personagem):
+    """NPC genérico e parado — usado pra personagens secundários que só
+    conversam (mãe, colegas de turma, etc.), sem precisar criar uma classe
+    nova pra cada um."""
+    def __init__(self, nome, x, y, largura=32, altura=32):
+        super().__init__(nome, 0, x, y)  # velocidade 0: esses NPCs não andam
+        self.rect = pygame.Rect(x, y, largura, altura)
 
 
 # ── Sistema de Questões ───────────────────────────────────────────────────────
