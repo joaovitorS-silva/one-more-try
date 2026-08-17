@@ -4,7 +4,7 @@ from settings import PONTOS_FACIL_ERRO, PONTOS_MEDIO_ERRO, PONTOS_DIFICIL_ERRO
 
 
 # ── Personagens ───────────────────────────────────────────────────────────────
-#possivel classe abstrata)()()()9
+# TODO: candidata a virar classe abstrata (abc.ABC) quando Professor for usado de fato
 class Personagem:
     def __init__(self, nome, velocidade, x, y):
         self.nome       = nome
@@ -31,27 +31,38 @@ class Professor(Personagem):
 # ── Sistema de Questões ───────────────────────────────────────────────────────
 
 class Questao:
-    """Classe base para todas as questões da prova."""
-    def __init__(self, dificuldade, pontuacao_acerto, pontuacao_erro, opcoes):
+    """Classe base para todas as questões da prova.
+
+    enunciado e correta são obrigatórios no construtor — antes eram atribuídos
+    por fora depois do `PerguntaFacil(...)`, então nada impedia esquecer de
+    setar um dos dois e a questão quebrar (ou pior: rodar com correta=None)
+    só quando o jogador clicasse numa alternativa.
+    """
+    def __init__(self, dificuldade, pontuacao_acerto, pontuacao_erro, opcoes, enunciado, correta):
         self.dificuldade      = dificuldade
         self.pontuacao_acerto = pontuacao_acerto
         self.pontuacao_erro   = pontuacao_erro
         self.opcoes           = opcoes  # lista de alternativas A-D
+        self.enunciado        = enunciado
+        self.correta          = correta  # índice (0-3) da alternativa correta em `opcoes`
+
+        if not (0 <= correta < len(opcoes)):
+            raise ValueError(f"'correta'={correta} fora do intervalo de opções (0-{len(opcoes) - 1})")
 
 
 class PerguntaFacil(Questao):
-    def __init__(self, opcoes):
-        super().__init__("facil", PONTOS_FACIL_ACERTO, PONTOS_FACIL_ERRO, opcoes)
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("facil", PONTOS_FACIL_ACERTO, PONTOS_FACIL_ERRO, opcoes, enunciado, correta)
 
 
 class PerguntaMedia(Questao):
-    def __init__(self, opcoes):
-        super().__init__("media", PONTOS_MEDIO_ACERTO, PONTOS_MEDIO_ERRO, opcoes)
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("media", PONTOS_MEDIO_ACERTO, PONTOS_MEDIO_ERRO, opcoes, enunciado, correta)
 
 
 class PerguntaDificil(Questao):
-    def __init__(self, opcoes):
-        super().__init__("dificil", PONTOS_DIFICIL_ACERTO, PONTOS_DIFICIL_ERRO, opcoes)
+    def __init__(self, opcoes, enunciado, correta):
+        super().__init__("dificil", PONTOS_DIFICIL_ACERTO, PONTOS_DIFICIL_ERRO, opcoes, enunciado, correta)
 
 
 # ── Prova ─────────────────────────────────────────────────────────────────────
