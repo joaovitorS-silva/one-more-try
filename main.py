@@ -49,7 +49,7 @@ class TelaInicial:
         for botao in self.botoes:
             botao.desenhar(tela)
 
-    
+
 class Game:
     """Gerenciador principal do jogo — controla o loop e as cenas."""
 
@@ -94,4 +94,3 @@ class Game:
 
 if __name__ == "__main__":
     Game().executar()
-    

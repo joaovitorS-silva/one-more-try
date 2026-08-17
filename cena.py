@@ -1,15 +1,22 @@
 import pygame
-from settings import LARGURA, ALTURA, PONTUACAO_GAME_OVER
+from settings import (
+    LARGURA, ALTURA, PONTUACAO_GAME_OVER, FONTE_NOME,
+    BRANCO, VERDE, DOURADO,
+    COR_FUNDO_QUARTO, COR_FUNDO_RUA, COR_FUNDO_CORREDOR, COR_FUNDO_SALA,
+    COR_QUADRO, COR_PAINEL_PROVA, COR_OVERLAY,
+)
 from models import Pelezin, PerguntaFacil, PerguntaMedia, PerguntaDificil
 from botoes_tela_inicial import Botao
 
 class FaseBase:
-    """Classe pai para todas as fases de caminhada."""
     def __init__(self, game, cor_fundo, nome_fase):
         self.game = game
         self.cor_fundo = cor_fundo
         self.nome_fase = nome_fase
         self.jogador = Pelezin("sol", 0, 5, 50, ALTURA // 2)
+
+        # Fonte criada uma única vez:
+        self._fonte_nome_fase = pygame.font.SysFont(FONTE_NOME, 24, bold=True)
 
     def processar_eventos(self, eventos):
         pass
@@ -33,7 +40,7 @@ class FaseBase:
         pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
         
         fonte = pygame.font.SysFont("arial", 24, bold=True)
-        texto_surf = fonte.render(self.nome_fase, True, (255, 255, 255))
+        texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
 
     def proxima_fase(self):
@@ -61,33 +68,43 @@ class TelaSalaProva(FaseBase):
     """Sala de aula onde o jogador precisa andar até o quadro para iniciar a prova."""
     
     def __init__(self, game):
-        super().__init__(game, (45, 90, 140), "4. Sala de Prova")
-        
+        super().__init__(game, COR_FUNDO_SALA, "4. Sala de Prova")
+
+        self._fonte_quadro = pygame.font.SysFont(FONTE_NOME, 18, bold=True)
+        self._fonte_hud = pygame.font.SysFont(FONTE_NOME, 20, bold=True)
+        self._fonte_pergunta = pygame.font.SysFont(FONTE_NOME, 20, bold=True)
+        self._fonte_fim_titulo = pygame.font.SysFont(FONTE_NOME, 28, bold=True)
+        self._fonte_fim_sub = pygame.font.SysFont(FONTE_NOME, 16)
+
         # Criação do Quadro Interativo (no centro da sala, mais ao topo)
         self.quadro_rect = pygame.Rect(LARGURA // 2 - 100, 100, 200, 100)
-        
+
         # Controle de Estado da Prova
         self.exibindo_prova = False
         self.prova_encerrada = False
         self.idx_atual = 0
         self.botoes_alternativas = []
-        
+
         self._inicializar_questoes()
 
     def _inicializar_questoes(self):
-        q1 = PerguntaFacil(["A) Pygame", "B) C++", "C) HTML", "D) Assembly"])
-        q1.enunciado = "Qual biblioteca estamos usando para criar este jogo?"
-        q1.correta = 0
-        
-        q2 = PerguntaMedia(["A) Perder pontos", "B) Mudar de cor", "C) Viagem no tempo", "D) Nada"])
-        q2.enunciado = "O que acontece em 'One More Try' se atingir -30 pontos?"
-        q2.correta = 2
-        
-        q3 = PerguntaDificil(["A) Polimorfismo", "B) Encapsulamento", "C) Herança", "D) Instanciação"])
-        q3.enunciado = "Qual conceito de POO foi usado para reaproveitar a FaseBase?"
-        q3.correta = 2
-        
-        self.questoes = [q1, q2, q3]
+        self.questoes = [
+            PerguntaFacil(
+                ["A) Pygame", "B) C++", "C) HTML", "D) Assembly"],
+                enunciado="Qual biblioteca estamos usando para criar este jogo?",
+                correta=0,
+            ),
+            PerguntaMedia(
+                ["A) Perder pontos", "B) Mudar de cor", "C) Viagem no tempo", "D) Nada"],
+                enunciado="O que acontece em 'One More Try' se atingir -30 pontos?",
+                correta=2,
+            ),
+            PerguntaDificil(
+                ["A) Polimorfismo", "B) Encapsulamento", "C) Herança", "D) Instanciação"],
+                enunciado="Qual conceito de POO foi usado para reaproveitar a FaseBase?",
+                correta=2,
+            ),
+        ]
 
     def _carregar_botoes_da_questao(self):
         self.botoes_alternativas.clear()
@@ -216,7 +233,7 @@ class TelaSalaProva(FaseBase):
         else:
             tit, sub, cor = "APROVADO! Você superou o IFRN!", "Pressione qualquer tecla para voltar ao Menu Inicial.", (100, 255, 100)
             
-        surf_tit = fonte_tit.render(tit, True, cor)
-        surf_sub = fonte_sub.render(sub, True, (230, 230, 230))
+        surf_tit = self._fonte_fim_titulo.render(tit, True, cor)
+        surf_sub = self._fonte_fim_sub.render(sub, True, (230, 230, 230))
         tela.blit(surf_tit, surf_tit.get_rect(center=(LARGURA // 2, ALTURA // 2 - 20)))
         tela.blit(surf_sub, surf_sub.get_rect(center=(LARGURA // 2, ALTURA // 2 + 30)))
