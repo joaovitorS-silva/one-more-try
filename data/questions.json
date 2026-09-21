@@ -1,0 +1,183 @@
+{
+  "facil": [
+    {
+      "enunciado": "Qual biblioteca estamos usando para criar este jogo?",
+      "opcoes": ["A) Pygame", "B) C++", "C) HTML", "D) Assembly"],
+      "correta": 0
+    },
+    {
+      "enunciado": "Em Python, qual símbolo é usado para comentar uma linha de código?",
+      "opcoes": ["A) //", "B) #", "C) --", "D) /* */"],
+      "correta": 1
+    },
+    {
+      "enunciado": "Qual estrutura de dados armazena pares chave-valor em Python?",
+      "opcoes": ["A) Lista", "B) Tupla", "C) Dicionário", "D) Set"],
+      "correta": 2
+    },
+    {
+      "enunciado": "No jogo, qual tecla é usada para interagir com NPCs e objetos?",
+      "opcoes": ["A) E", "B) Q", "C) F", "D) ESC"],
+      "correta": 0
+    },
+    {
+      "enunciado": "Qual é a extensão padrão de um arquivo Python?",
+      "opcoes": ["A) .py", "B) .pt", "C) .pyt", "D) .python"],
+      "correta": 0
+    },
+    {
+      "enunciado": "Quantos pontos o jogador ganha ao acertar uma questão fácil?",
+      "opcoes": ["A) 5", "B) 10", "C) 15", "D) 20"],
+      "correta": 0
+    },
+    {
+      "enunciado": "Qual comando em Python cria um laço de repetição percorrendo uma lista?",
+      "opcoes": ["A) while True", "B) for item in lista", "C) loop(lista)", "D) repeat lista"],
+      "correta": 1
+    },
+    {
+      "enunciado": "Em orientação a objetos, como se chama o método especial que inicializa um objeto em Python?",
+      "opcoes": ["A) __start__", "B) __new__", "C) __init__", "D) __main__"],
+      "correta": 2
+    }
+  ],
+  "media": [
+    {
+      "enunciado": "O que acontece em 'One More Try' se atingir -30 pontos?",
+      "opcoes": ["A) Perder pontos", "B) Mudar de cor", "C) Viagem no tempo", "D) Nada"],
+      "correta": 2
+    },
+    {
+      "enunciado": "Qual é a função do método `atualizar()` nas classes de cena do jogo?",
+      "opcoes": [
+        "A) Desenhar a tela",
+        "B) Atualizar a lógica do jogo a cada frame",
+        "C) Carregar imagens",
+        "D) Tocar sons"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Em Pygame, qual estrutura é normalmente usada para detectar colisões entre objetos?",
+      "opcoes": ["A) Surface", "B) Clock", "C) Rect", "D) Sprite Sheet"],
+      "correta": 2
+    },
+    {
+      "enunciado": "No sistema de pontuação do jogo, qual dificuldade tem a MAIOR penalidade ao errar?",
+      "opcoes": ["A) Fácil", "B) Média", "C) Difícil", "D) Todas são iguais"],
+      "correta": 0
+    },
+    {
+      "enunciado": "O que representa a `vida_atual` do Professor na sala de prova?",
+      "opcoes": [
+        "A) A energia do jogador",
+        "B) O quanto falta para o jogador vencer o confronto",
+        "C) O tempo restante da prova",
+        "D) A quantidade de perguntas erradas"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Qual conceito de POO permite que `PerguntaFacil` reaproveite atributos de `Questao`?",
+      "opcoes": ["A) Encapsulamento", "B) Herança", "C) Polimorfismo", "D) Abstração"],
+      "correta": 1
+    },
+    {
+      "enunciado": "No fluxo do jogo, o que acontece depois que PeLezin passa na prova?",
+      "opcoes": [
+        "A) O jogo reinicia direto",
+        "B) Ele sai, interage no corredor e volta para casa",
+        "C) A prova recomeça com mais perguntas",
+        "D) Nada muda"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Qual é a principal vantagem de guardar as perguntas em um arquivo `questions.json` em vez de direto no código?",
+      "opcoes": [
+        "A) O jogo fica mais rápido",
+        "B) É possível editar/expandir o banco sem mexer no código Python",
+        "C) Reduz o tamanho da tela",
+        "D) Não há vantagem real"
+      ],
+      "correta": 1
+    }
+  ],
+  "dificil": [
+    {
+      "enunciado": "Qual conceito de POO foi usado para reaproveitar a FaseBase?",
+      "opcoes": ["A) Polimorfismo", "B) Encapsulamento", "C) Herança", "D) Instanciação"],
+      "correta": 2
+    },
+    {
+      "enunciado": "Por que usar `random.sample()` em vez de `random.choice()` em loop para sortear as perguntas da prova?",
+      "opcoes": [
+        "A) `random.sample()` é mais lento",
+        "B) `random.sample()` evita repetição de itens no sorteio",
+        "C) `random.choice()` não existe em Python",
+        "D) Não há diferença prática"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Na classe `Questao`, por que faz sentido validar `correta` dentro do `__init__` em vez de deixar quebrar só quando o jogador clicar numa alternativa?",
+      "opcoes": [
+        "A) Detecta o erro cedo (fail-fast), antes de virar bug em tempo de jogo",
+        "B) Deixa o código mais lento de propósito",
+        "C) É uma exigência do Pygame",
+        "D) Não faz diferença nenhuma"
+      ],
+      "correta": 0
+    },
+    {
+      "enunciado": "Qual seria a forma mais adequada de garantir que a prova sempre comece com perguntas fáceis e termine com difíceis, mesmo sorteando o conteúdo aleatoriamente?",
+      "opcoes": [
+        "A) Embaralhar a lista inteira de questões no final",
+        "B) Sortear dentro de cada grupo de dificuldade e concatenar na ordem fácil → média → difícil",
+        "C) Sortear apenas as perguntas fáceis e repetir as outras",
+        "D) Ordenar por ordem alfabética do enunciado"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Se o banco de perguntas fáceis tiver só 3 itens e o jogo pedir para sortear 5, o que `random.sample()` faz?",
+      "opcoes": [
+        "A) Repete perguntas para completar",
+        "B) Levanta um erro (ValueError), pois não há itens suficientes",
+        "C) Sorteia normalmente com menos perguntas",
+        "D) Ignora silenciosamente o problema"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Qual é a principal diferença entre composição e herança, considerando como `Prova` usa uma lista de `Questao`?",
+      "opcoes": [
+        "A) Não há diferença, são sinônimos",
+        "B) Composição é 'tem um' (Prova tem Questões); herança é 'é um' (PerguntaFacil é uma Questao)",
+        "C) Herança é sempre melhor que composição",
+        "D) Composição só funciona com listas"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "No design atual, `Professor.recuperar_vida()` usa `min(self.vida_maxima, ...)`. Qual é o propósito dessa técnica?",
+      "opcoes": [
+        "A) Deixar o professor mais lento",
+        "B) Garantir que a vida não ultrapasse o valor máximo permitido",
+        "C) Calcular a média de pontos",
+        "D) Não tem propósito, é redundante"
+      ],
+      "correta": 1
+    },
+    {
+      "enunciado": "Por que separar o carregamento do banco de perguntas (`banco_perguntas.py`) da lógica de exibição (`sala_prova.py`) é uma boa prática?",
+      "opcoes": [
+        "A) Não é uma boa prática, deveria estar tudo junto",
+        "B) Separa responsabilidades: um cuida dos dados, outro da interface/lógica de jogo",
+        "C) Deixa o jogo mais pesado",
+        "D) É exigido pelo Pygame"
+      ],
+      "correta": 1
+    }
+  ]
+}
