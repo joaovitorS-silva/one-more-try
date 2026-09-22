@@ -22,7 +22,11 @@ class Botao:
         cor = CINZA if self.hover else BRANCO
         pygame.draw.rect(tela, cor, self.rect, border_radius=20)
 
-        fonte      = _get_fonte()
+        fonte = _get_fonte()
+        tamanho = 32
+        while fonte.size(self.texto)[0] > self.rect.width - 24 and tamanho > 12:
+            tamanho -= 1
+            fonte = pygame.font.SysFont("arial", tamanho, bold=True)
         texto_surf = fonte.render(self.texto, True, PRETO)
         tela.blit(texto_surf, texto_surf.get_rect(center=self.rect.center))
 

@@ -199,3 +199,39 @@ Para a primeira versão funcional, o jogo **obrigatoriamente** deve ter:
 ---
 
 *Desenvolvido como projeto da disciplina de Programação Orientada a Objetos — IFRN Campus Caicó, 2º ano.*
+
+---
+
+## 14. Versão implementada — setembro de 2026
+
+A base foi mantida nos arquivos Python da raiz (a árvore `src/` acima é a
+proposta original). Não é preciso ter sprites para jogar.
+
+```bash
+python -m pip install -r requirements.txt
+python main.py
+```
+
+Dependência: **pygame-ce 2.5.8**, importado normalmente como `pygame`.
+Não instalar `pygame` e `pygame-ce` juntos no mesmo ambiente virtual.
+
+- Jornada completa: quarto → cozinha → rua → pátio → prova → corredor →
+  volta para casa → celebração. Ao reprovar, a viagem no tempo retorna ao quarto.
+- WASD move; E interage perto de portas/NPCs; ENTER avança diálogos.
+- Prova com escolha de Matemática ou POO/Python, nove questões e até 90 segundos.
+- **Aprovação: 50 pontos; derrota imediata: −30; máximo: 105.** Ao acabar
+  tempo/questões, nota abaixo de 50 também reprova.
+- 1–4 ou mouse responde. H compra dica por 5 créditos (até duas dicas).
+  Cada dois acertos consecutivos rendem 5 créditos, separados da nota.
+- ESC pausa/continua. Durante a pausa, M volta ao menu.
+- Duração pretendida: cerca de dois minutos, variável com respostas e diálogos.
+
+Detalhes: [relatório de implementação](RELATORIO_IMPLEMENTACAO.md),
+[contexto para continuidade](CONTEXTO_PROJETO.md) e
+[preparação de sprites](assets/sprites/README.md).
+
+Testes sem abrir janela:
+
+```bash
+python -B -m unittest discover -s tests -v
+```

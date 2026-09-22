@@ -3,6 +3,7 @@ Objetos de cenário reutilizáveis: móveis decorativos, a porta interativa
 (clicável, usada para trocar de cena) e o banco onde o jogador pode sentar.
 """
 import pygame
+from sprites import sprites
 
 
 class ObjetoCenario:
@@ -15,7 +16,7 @@ class ObjetoCenario:
         self.rect = pygame.Rect(x, y, largura, altura)
 
     def desenhar(self, tela, fonte):
-        pygame.draw.rect(tela, self.cor, self.rect, border_radius=6)
+        sprites.desenhar(tela, self.rotulo.lower().replace(" ", "_"), self.rect, self.cor)
         pygame.draw.rect(tela, (255, 255, 255), self.rect, width=2, border_radius=6)
 
         if self.rotulo:

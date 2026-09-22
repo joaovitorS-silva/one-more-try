@@ -2,6 +2,7 @@
 Gerenciador de diálogos do jogo — reutilizável para qualquer cena.
 """
 import pygame
+from interface import texto
 from settings import FONTE_NOME, ALTURA, LARGURA
 
 
@@ -61,9 +62,8 @@ class GerenciadorDialogo:
         
         # Linha atual de diálogo
         linha_atual = self.linhas[self.indice_atual]
-        txt_linha = self._fonte_dialogo.render(linha_atual, True, (255, 255, 255))
-        tela.blit(txt_linha, (x_dialogo + 25, y_dialogo + 25))
+        texto(tela, linha_atual, x_dialogo + 25, y_dialogo + 18, 20, largura=largura_d - 50)
         
         # Dica de como continuar
-        txt_dica = self._fonte_dica.render("Clique ou aperte uma tecla para continuar...", True, (180, 180, 180))
+        txt_dica = self._fonte_dica.render("ENTER ou clique para continuar...", True, (180, 180, 180))
         tela.blit(txt_dica, (x_dialogo + 25, y_dialogo + altura_d - 40))

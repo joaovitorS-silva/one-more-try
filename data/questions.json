@@ -2,49 +2,138 @@
   "facil": [
     {
       "enunciado": "Qual biblioteca estamos usando para criar este jogo?",
-      "opcoes": ["A) Pygame", "B) C++", "C) HTML", "D) Assembly"],
+      "opcoes": [
+        "A) Pygame",
+        "B) C++",
+        "C) HTML",
+        "D) Assembly"
+      ],
       "correta": 0
     },
     {
       "enunciado": "Em Python, qual símbolo é usado para comentar uma linha de código?",
-      "opcoes": ["A) //", "B) #", "C) --", "D) /* */"],
+      "opcoes": [
+        "A) //",
+        "B) #",
+        "C) --",
+        "D) /* */"
+      ],
       "correta": 1
     },
     {
       "enunciado": "Qual estrutura de dados armazena pares chave-valor em Python?",
-      "opcoes": ["A) Lista", "B) Tupla", "C) Dicionário", "D) Set"],
+      "opcoes": [
+        "A) Lista",
+        "B) Tupla",
+        "C) Dicionário",
+        "D) Set"
+      ],
       "correta": 2
     },
     {
       "enunciado": "No jogo, qual tecla é usada para interagir com NPCs e objetos?",
-      "opcoes": ["A) E", "B) Q", "C) F", "D) ESC"],
+      "opcoes": [
+        "A) E",
+        "B) Q",
+        "C) F",
+        "D) ESC"
+      ],
       "correta": 0
     },
     {
       "enunciado": "Qual é a extensão padrão de um arquivo Python?",
-      "opcoes": ["A) .py", "B) .pt", "C) .pyt", "D) .python"],
+      "opcoes": [
+        "A) .py",
+        "B) .pt",
+        "C) .pyt",
+        "D) .python"
+      ],
       "correta": 0
     },
     {
       "enunciado": "Quantos pontos o jogador ganha ao acertar uma questão fácil?",
-      "opcoes": ["A) 5", "B) 10", "C) 15", "D) 20"],
+      "opcoes": [
+        "A) 5",
+        "B) 10",
+        "C) 15",
+        "D) 20"
+      ],
       "correta": 0
     },
     {
       "enunciado": "Qual comando em Python cria um laço de repetição percorrendo uma lista?",
-      "opcoes": ["A) while True", "B) for item in lista", "C) loop(lista)", "D) repeat lista"],
+      "opcoes": [
+        "A) while True",
+        "B) for item in lista",
+        "C) loop(lista)",
+        "D) repeat lista"
+      ],
       "correta": 1
     },
     {
       "enunciado": "Em orientação a objetos, como se chama o método especial que inicializa um objeto em Python?",
-      "opcoes": ["A) __start__", "B) __new__", "C) __init__", "D) __main__"],
+      "opcoes": [
+        "A) __start__",
+        "B) __new__",
+        "C) __init__",
+        "D) __main__"
+      ],
       "correta": 2
+    },
+    {
+      "enunciado": "Quanto é 7 × 8?",
+      "opcoes": [
+        "54",
+        "56",
+        "64",
+        "48"
+      ],
+      "correta": 1,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Quanto é 25% de 80?",
+      "opcoes": [
+        "10",
+        "15",
+        "20",
+        "25"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Se x + 7 = 12, quanto vale x?",
+      "opcoes": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Qual é a área de um quadrado de lado 6?",
+      "opcoes": [
+        "12",
+        "24",
+        "36",
+        "18"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
     }
   ],
   "media": [
     {
       "enunciado": "O que acontece em 'One More Try' se atingir -30 pontos?",
-      "opcoes": ["A) Perder pontos", "B) Mudar de cor", "C) Viagem no tempo", "D) Nada"],
+      "opcoes": [
+        "A) Perder pontos",
+        "B) Mudar de cor",
+        "C) Viagem no tempo",
+        "D) Nada"
+      ],
       "correta": 2
     },
     {
@@ -59,27 +148,42 @@
     },
     {
       "enunciado": "Em Pygame, qual estrutura é normalmente usada para detectar colisões entre objetos?",
-      "opcoes": ["A) Surface", "B) Clock", "C) Rect", "D) Sprite Sheet"],
+      "opcoes": [
+        "A) Surface",
+        "B) Clock",
+        "C) Rect",
+        "D) Sprite Sheet"
+      ],
       "correta": 2
     },
     {
       "enunciado": "No sistema de pontuação do jogo, qual dificuldade tem a MAIOR penalidade ao errar?",
-      "opcoes": ["A) Fácil", "B) Média", "C) Difícil", "D) Todas são iguais"],
+      "opcoes": [
+        "A) Fácil",
+        "B) Média",
+        "C) Difícil",
+        "D) Todas são iguais"
+      ],
       "correta": 0
     },
     {
-      "enunciado": "O que representa a `vida_atual` do Professor na sala de prova?",
+      "enunciado": "Qual recurso representa a vida de PeLezin durante a prova?",
       "opcoes": [
-        "A) A energia do jogador",
-        "B) O quanto falta para o jogador vencer o confronto",
-        "C) O tempo restante da prova",
-        "D) A quantidade de perguntas erradas"
+        "A) A nota da prova",
+        "B) A velocidade",
+        "C) O tamanho da sala",
+        "D) O relógio do menu"
       ],
-      "correta": 1
+      "correta": 0
     },
     {
       "enunciado": "Qual conceito de POO permite que `PerguntaFacil` reaproveite atributos de `Questao`?",
-      "opcoes": ["A) Encapsulamento", "B) Herança", "C) Polimorfismo", "D) Abstração"],
+      "opcoes": [
+        "A) Encapsulamento",
+        "B) Herança",
+        "C) Polimorfismo",
+        "D) Abstração"
+      ],
       "correta": 1
     },
     {
@@ -101,12 +205,61 @@
         "D) Não há vantagem real"
       ],
       "correta": 1
+    },
+    {
+      "enunciado": "Se 3x − 6 = 15, quanto vale x?",
+      "opcoes": [
+        "5",
+        "6",
+        "7",
+        "9"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Qual é a média de 6, 8 e 10?",
+      "opcoes": [
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Um produto de R$ 120 recebe 15% de desconto. Qual o preço final?",
+      "opcoes": [
+        "R$ 105",
+        "R$ 102",
+        "R$ 100",
+        "R$ 108"
+      ],
+      "correta": 1,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Um triângulo tem ângulos de 50° e 60°. Qual é o terceiro?",
+      "opcoes": [
+        "60°",
+        "70°",
+        "80°",
+        "90°"
+      ],
+      "correta": 1,
+      "assunto": "Matemática"
     }
   ],
   "dificil": [
     {
       "enunciado": "Qual conceito de POO foi usado para reaproveitar a FaseBase?",
-      "opcoes": ["A) Polimorfismo", "B) Encapsulamento", "C) Herança", "D) Instanciação"],
+      "opcoes": [
+        "A) Polimorfismo",
+        "B) Encapsulamento",
+        "C) Herança",
+        "D) Instanciação"
+      ],
       "correta": 2
     },
     {
@@ -178,6 +331,50 @@
         "D) É exigido pelo Pygame"
       ],
       "correta": 1
+    },
+    {
+      "enunciado": "Quais são as raízes de x² − 5x + 6 = 0?",
+      "opcoes": [
+        "1 e 6",
+        "2 e 3",
+        "−2 e −3",
+        "0 e 5"
+      ],
+      "correta": 1,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Em um dado comum, qual a probabilidade de sair um número maior que 4?",
+      "opcoes": [
+        "1/2",
+        "1/6",
+        "1/3",
+        "2/3"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Na sequência 3, 7, 11, 15, qual é o décimo termo?",
+      "opcoes": [
+        "35",
+        "37",
+        "39",
+        "43"
+      ],
+      "correta": 2,
+      "assunto": "Matemática"
+    },
+    {
+      "enunciado": "Um triângulo retângulo tem catetos 6 e 8. Qual a hipotenusa?",
+      "opcoes": [
+        "9",
+        "10",
+        "12",
+        "14"
+      ],
+      "correta": 1,
+      "assunto": "Matemática"
     }
   ]
 }

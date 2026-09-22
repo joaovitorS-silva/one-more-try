@@ -8,6 +8,8 @@ Para objetos de cenário (portas, móveis, banco), veja objetos_cenario.py
 import pygame
 from settings import LARGURA, ALTURA, FONTE_NOME, BRANCO
 from models import Pelezin, NPC
+from sprites import sprites
+from interface import texto
 from dialogo import GerenciadorDialogo
 from objetos_cenarios import ObjetoCenario, Porta, Banco, Chao
 
@@ -43,42 +45,48 @@ class FaseBase:
     def atualizar(self):
         """Atualiza posição do jogador com entrada do teclado."""
         teclas = pygame.key.get_pressed()
-
-        if teclas[pygame.K_w]:
-            self.jogador.rect.y -= self.jogador.velocidade
-        if teclas[pygame.K_s]:
-            self.jogador.rect.y += self.jogador.velocidade
-        if teclas[pygame.K_a]:
-            self.jogador.rect.x -= self.jogador.velocidade
-        if teclas[pygame.K_d]:
-            self.jogador.rect.x += self.jogador.velocidade
-
-        if self.jogador.rect.top < 0:
-            self.jogador.rect.top = 0
-        if self.jogador.rect.left < 0:
-            self.jogador.rect.left = 0
-        
-        # Colisão com o chão (se existir)
-        if self.chao is not None:
-            if self.jogador.rect.colliderect(self.chao.rect):
-                # Empurra o jogador para cima do chão
-                self.jogador.rect.bottom = self.chao.rect.top
-        else:
-            # Limite de tela padrão se não há chão
-            if self.jogador.rect.bottom > ALTURA:
-                self.jogador.rect.bottom = ALTURA
-
-        # Fases com porta clicável (usa_transicao_automatica = False) controlam
-        # a própria transição e não usam esta checagem de borda.
+        direcao = pygame.Vector2(int(teclas[pygame.K_d]) - int(teclas[pygame.K_a]),
+                                 int(teclas[pygame.K_s]) - int(teclas[pygame.K_w]))
+        if direcao.length_squared():
+            direcao = direcao.normalize() * self.jogador.velocidade * 60 * self.game.dt
+        obstaculos = [getattr(self, nome).rect for nome in ('cama', 'fliperama')
+                      if hasattr(self, nome)]
+        for eixo in ('x', 'y'):
+            deslocamento = round(getattr(direcao, eixo))
+            setattr(self.jogador.rect, eixo, getattr(self.jogador.rect, eixo) + deslocamento)
+            for obstaculo in obstaculos:
+                if self.jogador.rect.colliderect(obstaculo):
+                    if eixo == 'x':
+                        if deslocamento > 0:
+                            self.jogador.rect.right = obstaculo.left
+                        elif deslocamento < 0:
+                            self.jogador.rect.left = obstaculo.right
+                    else:
+                        if deslocamento > 0:
+                            self.jogador.rect.bottom = obstaculo.top
+                        elif deslocamento < 0:
+                            self.jogador.rect.top = obstaculo.bottom
+        limite_y = self.chao.rect.top if self.chao else ALTURA
+        self.jogador.rect.clamp_ip(pygame.Rect(0, 65, LARGURA, limite_y - 65))
         if self.usa_transicao_automatica and self.jogador.rect.right >= LARGURA:
             self.proxima_fase()
+
+    def perto(self, objeto):
+        return self.jogador.rect.inflate(90, 90).colliderect(objeto.rect)
+
+    def interagir(self, evento, objeto):
+        return self.perto(objeto) and (
+            (evento.type == pygame.KEYDOWN and evento.key == pygame.K_e)
+            or (evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1
+                and objeto.rect.collidepoint(evento.pos)))
 
     def desenhar(self, tela):
         """Desenha a fase básica."""
         tela.fill(self.cor_fundo)
-        pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
+        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
         texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
+        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
 
     def proxima_fase(self):
         """Chamado quando o jogador avança. Sobrescrever em subclasses."""
@@ -88,9 +96,7 @@ class FaseBase:
 # ─── CENA 1: QUARTO ───────────────────────────────────────────────────────────
 
 class TelaQuarto(FaseBase):
-    """Quarto do PeLezin. Tem uma cama e um fliperama (decorativos, sem
-    utilidade por enquanto) e uma porta no meio da sala — clique nela pra
-    sair, em vez de andar até a borda da tela."""
+    """Quarto com móveis sólidos e porta acionada por proximidade."""
 
     usa_transicao_automatica = False
 
@@ -102,7 +108,7 @@ class TelaQuarto(FaseBase):
         # Chão da sala
         self.chao = Chao(y=500, largura=LARGURA, altura=100, cor=(80, 50, 20))
 
-        # Objetos decorativos — sem utilidade ainda
+        # Móveis sólidos: a colisão é resolvida em FaseBase.
         self.cama = ObjetoCenario("Cama", (101, 67, 33), 60, 420, 180, 90)
         self.fliperama = ObjetoCenario("Fliperama", (40, 40, 90), 340, 330, 90, 170)
 
@@ -111,8 +117,9 @@ class TelaQuarto(FaseBase):
 
     def processar_eventos(self, eventos):
         for evento in eventos:
-            if self.porta.clicado(evento):
+            if self.interagir(evento, self.porta):
                 self.proxima_fase()
+                return
 
     def desenhar(self, tela):
         tela.fill(self.cor_fundo)
@@ -122,10 +129,11 @@ class TelaQuarto(FaseBase):
         self.fliperama.desenhar(tela, self._fonte_rotulo)
         self.porta.desenhar(tela, self._fonte_rotulo)
 
-        pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
+        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
 
         texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
+        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
 
     def proxima_fase(self):
         self.game.trocar_cena(TelaCozinha(self.game))
@@ -149,11 +157,10 @@ class TelaCozinha(FaseBase):
 
         self.mae = NPC("Mãe", 380, 200)
         self.dialogo_mae = GerenciadorDialogo([
-            "Mãe: Bom dia, filho Já tomou café?",
-            "PeLezin:VAI TOMAR NO CU MINHA MAER",
-            "Mãe: QUE ISSO FILHO",
+            "Mãe: Bom dia, filho! Respire e leia cada questão com calma.",
+            "PeLezin: Hoje eu passo! E se não der, vou tentar de novo.",
+            "Mãe: Lembre: uma classe pode herdar características de outra.",
         ])
-        self.dialogo_ja_mostrado = False
 
         # Porta na direita, precisa ser clicada
         self.porta = Porta(730, 240, largura=50, altura=120)
@@ -161,12 +168,17 @@ class TelaCozinha(FaseBase):
     def processar_eventos(self, eventos):
         for evento in eventos:
             if self.dialogo_mae.ativo:
-                if evento.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
+                if (evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN) or (evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1):
                     self.dialogo_mae.proximo()
                 continue
 
-            if self.porta.clicado(evento):
+            if self.interagir(evento, self.mae):
+                self.dialogo_mae.iniciar()
+                return
+
+            if self.interagir(evento, self.porta):
                 self.proxima_fase()
+                return
 
     def atualizar(self):
         if self.dialogo_mae.ativo:
@@ -174,26 +186,25 @@ class TelaCozinha(FaseBase):
 
         super().atualizar()
 
-        if not self.dialogo_ja_mostrado and self.jogador.rect.colliderect(self.mae.rect):
-            self.dialogo_mae.iniciar()
-            self.dialogo_ja_mostrado = True
+
 
     def desenhar(self, tela):
         tela.fill(self.cor_fundo)
 
         self.chao.desenhar(tela)
 
-        pygame.draw.rect(tela, (200, 130, 90), self.mae.rect)
+        sprites.desenhar(tela, "mae", self.mae.rect, (200, 130, 90))
         pygame.draw.rect(tela, (255, 255, 255), self.mae.rect, width=2)
         txt_mae = self._fonte_rotulo.render(self.mae.nome, True, BRANCO)
         tela.blit(txt_mae, txt_mae.get_rect(midbottom=(self.mae.rect.centerx, self.mae.rect.top - 4)))
 
         self.porta.desenhar(tela, self._fonte_rotulo)
 
-        pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
+        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
 
         texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
+        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
 
         if self.dialogo_mae.ativo:
             self.dialogo_mae.desenhar(tela)
@@ -226,11 +237,11 @@ class TelaRua(FaseBase):
     def processar_eventos(self, eventos):
         for evento in eventos:
             if self.dialogo_banco.ativo:
-                if evento.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
+                if (evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN) or (evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1):
                     self.dialogo_banco.proximo()
                 continue
 
-            if self.banco.clicado(evento):
+            if self.interagir(evento, self.banco):
                 self.dialogo_banco.iniciar()
 
     def atualizar(self):
@@ -246,10 +257,11 @@ class TelaRua(FaseBase):
         self.placa_onibus.desenhar(tela, self._fonte_rotulo)
         self.banco.desenhar(tela, self._fonte_rotulo)
 
-        pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
+        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
 
         texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
+        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
 
         if self.dialogo_banco.ativo:
             self.dialogo_banco.desenhar(tela)
@@ -281,17 +293,19 @@ class TelaCorredor(FaseBase):
         self.dialogo_amigos = GerenciadorDialogo([
             "PeLezin: E aí, pessoal! Preparados pra prova?",
             "Ana: Bora que já tá quase na hora!",
-            "Bruno: Boa sorte aí, PeLezin!",
-            "Carla: Você consegue, só ficar calmo.",
+            "Bruno: A cada dois acertos seguidos você ganha 5 créditos de dica.",
+            "Carla: Na prova, H compra uma dica e elimina uma alternativa errada.",
         ])
-        self.dialogo_ja_mostrado = False
 
     def processar_eventos(self, eventos):
         for evento in eventos:
             if self.dialogo_amigos.ativo:
-                if evento.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
+                if (evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN) or (evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1):
                     self.dialogo_amigos.proximo()
                 continue
+            if any(self.interagir(evento, npc) for npc in self.colegas):
+                self.dialogo_amigos.iniciar()
+                return
 
     def atualizar(self):
         if self.dialogo_amigos.ativo:
@@ -299,11 +313,6 @@ class TelaCorredor(FaseBase):
 
         super().atualizar()
 
-        if not self.dialogo_ja_mostrado:
-            colidiu = any(self.jogador.rect.colliderect(npc.rect) for npc in self.colegas)
-            if colidiu:
-                self.dialogo_amigos.iniciar()
-                self.dialogo_ja_mostrado = True
 
     def desenhar(self, tela):
         tela.fill(self.cor_fundo)
@@ -311,15 +320,16 @@ class TelaCorredor(FaseBase):
         self.chao.desenhar(tela)
 
         for npc in self.colegas:
-            pygame.draw.rect(tela, (90, 140, 200), npc.rect)
+            sprites.desenhar(tela, npc.nome.lower(), npc.rect, (90, 140, 200))
             pygame.draw.rect(tela, (255, 255, 255), npc.rect, width=2)
             txt_nome = self._fonte_rotulo.render(npc.nome, True, BRANCO)
             tela.blit(txt_nome, txt_nome.get_rect(midbottom=(npc.rect.centerx, npc.rect.top - 4)))
 
-        pygame.draw.rect(tela, (0, 255, 0), self.jogador.rect)
+        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
 
         texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
         tela.blit(texto_surf, (20, 20))
+        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
 
         if self.dialogo_amigos.ativo:
             self.dialogo_amigos.desenhar(tela)

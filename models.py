@@ -105,9 +105,37 @@ class Prova:
     def __init__(self, questoes):
         self.questoes       = questoes  # lista de objetos Questao
         self.pontuacao_total = 0
+        self.respondidas = set()
 
     def responder(self, questao, acertou):
+        if questao not in self.questoes or questao in self.respondidas:
+            return
+        self.respondidas.add(questao)
         if acertou:
             self.pontuacao_total += questao.pontuacao_acerto
         else:
             self.pontuacao_total += questao.pontuacao_erro
+
+class LojaDicas:
+    """Créditos separados da nota: dois acertos seguidos rendem uma dica."""
+    def __init__(self):
+        self.creditos = 0
+        self.sequencia = 0
+        self.usadas = 0
+
+    def registrar_resposta(self, acertou):
+        self.sequencia = self.sequencia + 1 if acertou else 0
+        if self.sequencia and self.sequencia % 2 == 0:
+            self.creditos += 5
+
+    def comprar(self, questao, eliminadas):
+        from settings import CUSTO_DICA, LIMITE_DICAS
+        if self.creditos < CUSTO_DICA or self.usadas >= LIMITE_DICAS:
+            return None
+        alternativas = [i for i in range(len(questao.opcoes))
+                        if i != questao.correta and i not in eliminadas]
+        if not alternativas:
+            return None
+        self.creditos -= CUSTO_DICA
+        self.usadas += 1
+        return alternativas[0]

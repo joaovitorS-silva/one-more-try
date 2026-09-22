@@ -62,7 +62,7 @@ def carregar_todas_as_questoes():
     }
 
 
-def sortear_prova(qtd_facil=5, qtd_media=5, qtd_dificil=5):
+def sortear_prova(qtd_facil=5, qtd_media=5, qtd_dificil=5, assunto=None):
     """Monta uma prova sorteando perguntas aleatórias do banco, sem repetição.
 
     A ordem final é sempre fácil -> média -> difícil (progressão de
@@ -74,6 +74,11 @@ def sortear_prova(qtd_facil=5, qtd_media=5, qtd_dificil=5):
     na inicialização do que travar o jogo no meio da prova.
     """
     banco = carregar_todas_as_questoes()
+    if assunto:
+        banco_bruto = _carregar_banco_bruto()
+        banco = {nivel: _construir_questoes(
+            [q for q in banco_bruto[nivel] if q.get("assunto", "POO e Python") == assunto], classe)
+            for nivel, classe in _CLASSES_POR_DIFICULDADE.items()}
 
     pedidos = {
         "facil": qtd_facil,

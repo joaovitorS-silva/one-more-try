@@ -36,3 +36,9 @@ PONTOS_MEDIO_ERRO     = -10
 PONTOS_DIFICIL_ERRO   =  -5
 
 PONTUACAO_GAME_OVER   = -30
+# Partida curta: nove questões e até 90 segundos de prova.
+NOTA_APROVACAO = 50
+TEMPO_PROVA = 90
+QUESTOES_POR_NIVEL = 3
+CUSTO_DICA = 5
+LIMITE_DICAS = 2
