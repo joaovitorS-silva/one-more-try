@@ -3,7 +3,7 @@ Objetos de cenário reutilizáveis: móveis decorativos, a porta interativa
 (clicável, usada para trocar de cena) e o banco onde o jogador pode sentar.
 """
 import pygame
-from sprites import sprites
+from jogo.sistemas.sprites import sprites
 
 
 class ObjetoCenario:

@@ -128,45 +128,40 @@ Não há inimigos físicos no jogo. Os verdadeiros adversários de PeLezin são:
 
 ```
 one-more-try/
-│
+├── main.py                      # Ponto de entrada
+├── jogo/
+│   ├── __init__.py
+│   ├── game.py                  # Loop principal, pausa e troca de cenas
+│   ├── settings.py              # Configurações e regras de pontuação
+│   ├── models.py                # Personagens, questões, prova e loja de dicas
+│   ├── cenas/
+│   │   ├── menu.py              # Tela inicial e ajuda
+│   │   ├── cena.py              # Base das fases, quarto, cozinha, rua e pátio
+│   │   ├── sala_prova.py        # Escolha de assunto e interface da prova
+│   │   └── finais.py            # Viagem no tempo, volta para casa e celebração
+│   ├── sistemas/
+│   │   ├── banco_perguntas.py   # Carregamento e sorteio das questões
+│   │   ├── dialogo.py           # Gerenciamento de diálogos
+│   │   └── sprites.py           # Carregamento de imagens opcionais
+│   ├── ui/
+│   │   ├── botoes_tela_inicial.py # Botões reutilizáveis
+│   │   └── interface.py         # Renderização de texto
+│   └── objetos/
+│       ├── objetos_cenarios.py  # Móveis, portas, banco e chão
+│       └── sala_prova_objetos.py # Objetos da sala de aula
 ├── assets/
-│   ├── sprites/          # Imagens do personagem, NPCs, cenários
-│   ├── sounds/           # Músicas e efeitos sonoros por fase
-│   └── fonts/            # Fontes do jogo
-│
+│   └── sprites/                 # PNGs opcionais de personagens e objetos
 ├── data/
-│   └── questions.json    # Banco de perguntas (fácil, médio, difícil)
-│
-├── src/
-│   ├── main.py           # Ponto de entrada do jogo
-│   ├── settings.py       # Configurações globais (resolução, FPS, etc.)
-│   │
-│   ├── scenes/           # Cada fase/cenário é uma cena separada
-│   │   ├── bedroom.py
-│   │   ├── kitchen.py
-│   │   ├── street.py
-│   │   ├── schoolyard.py
-│   │   ├── classroom.py
-│   │   ├── hallway.py
-│   │   └── home_celebration.py
-│   │
-│   ├── entities/         # Classes dos personagens
-│   │   ├── player.py
-│   │   └── npc.py
-│   │
-│   ├── systems/          # Lógica do jogo
-│   │   ├── quiz.py       # Sistema de perguntas e pontuação
-│   │   ├── shop.py       # Loja de itens/dicas
-│   │   ├── dialogue.py   # Sistema de diálogos
-│   │   └── time_travel.py# Mecânica de viagem no tempo (game over)
-│   │
-│   └── ui/               # Interface visual
-│       ├── hud.py        # HUD com pontuação atual
-│       ├── menus.py      # Telas de menu, pausa e game over
-│       └── question_screen.py # Tela de questões da prova
-│
+│   └── questions.json          # Banco de perguntas
+├── tests/
+│   └── test_jogo.py             # Testes das regras e do percurso
+├── requirements.txt
 └── README.md
 ```
+
+O código usa imports a partir do pacote `jogo`. Os arquivos de perguntas e
+sprites são localizados em relação ao projeto, independentemente do diretório
+de onde o jogo é iniciado.
 
 ---
 
@@ -204,8 +199,8 @@ Para a primeira versão funcional, o jogo **obrigatoriamente** deve ter:
 
 ## 14. Versão implementada — setembro de 2026
 
-A base foi mantida nos arquivos Python da raiz (a árvore `src/` acima é a
-proposta original). Não é preciso ter sprites para jogar.
+O código está organizado no pacote `jogo/`, conforme a estrutura acima.
+O arquivo `main.py` da raiz inicia a aplicação. Não é preciso ter sprites para jogar.
 
 ```bash
 python -m pip install -r requirements.txt

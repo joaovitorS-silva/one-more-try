@@ -1,6 +1,6 @@
 import pygame
-from settings import PONTOS_FACIL_ACERTO, PONTOS_MEDIO_ACERTO, PONTOS_DIFICIL_ACERTO
-from settings import PONTOS_FACIL_ERRO, PONTOS_MEDIO_ERRO, PONTOS_DIFICIL_ERRO
+from jogo.settings import PONTOS_FACIL_ACERTO, PONTOS_MEDIO_ACERTO, PONTOS_DIFICIL_ACERTO
+from jogo.settings import PONTOS_FACIL_ERRO, PONTOS_MEDIO_ERRO, PONTOS_DIFICIL_ERRO
 
 
 # ── Personagens ───────────────────────────────────────────────────────────────
@@ -129,7 +129,7 @@ class LojaDicas:
             self.creditos += 5
 
     def comprar(self, questao, eliminadas):
-        from settings import CUSTO_DICA, LIMITE_DICAS
+        from jogo.settings import CUSTO_DICA, LIMITE_DICAS
         if self.creditos < CUSTO_DICA or self.usadas >= LIMITE_DICAS:
             return None
         alternativas = [i for i in range(len(questao.opcoes))

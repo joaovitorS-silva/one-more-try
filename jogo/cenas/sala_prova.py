@@ -1,15 +1,15 @@
 """Prova curta com nota, dificuldade progressiva e loja de dicas."""
 import math
 import pygame
-from settings import NOTA_APROVACAO, PONTUACAO_GAME_OVER, TEMPO_PROVA, QUESTOES_POR_NIVEL
-from models import Professor, Prova, LojaDicas
-from banco_perguntas import sortear_prova
-from botoes_tela_inicial import Botao
-from cena import FaseBase
-from objetos_cenarios import Chao
-from sala_prova_objetos import MesaProfessor, CadeiraAluno
-from interface import texto
-from sprites import sprites
+from jogo.settings import NOTA_APROVACAO, PONTUACAO_GAME_OVER, TEMPO_PROVA, QUESTOES_POR_NIVEL
+from jogo.models import Professor, Prova, LojaDicas
+from jogo.sistemas.banco_perguntas import sortear_prova
+from jogo.ui.botoes_tela_inicial import Botao
+from jogo.cenas.cena import FaseBase
+from jogo.objetos.objetos_cenarios import Chao
+from jogo.objetos.sala_prova_objetos import MesaProfessor, CadeiraAluno
+from jogo.ui.interface import texto
+from jogo.sistemas.sprites import sprites
 
 
 class TelaSalaProva(FaseBase):
@@ -59,7 +59,7 @@ class TelaSalaProva(FaseBase):
             self.encerrar('A nota chegou a −30 pontos.')
 
     def encerrar(self, motivo='A prova terminou.'):
-        from finais import TelaViagemTempo, TelaVoltaCorredor
+        from jogo.cenas.finais import TelaViagemTempo, TelaVoltaCorredor
         self.game.nota = self.prova.pontuacao_total
         if self.game.nota >= NOTA_APROVACAO:
             self.game.trocar_cena(TelaVoltaCorredor(self.game))

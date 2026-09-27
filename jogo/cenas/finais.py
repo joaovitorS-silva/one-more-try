@@ -1,11 +1,11 @@
 """Desfechos com as mesmas cenas e diálogos simples da jornada."""
 import math
 import pygame
-from cena import FaseBase, TelaRua, TelaCozinha, TelaQuarto
-from models import NPC
-from dialogo import GerenciadorDialogo
-from interface import texto
-from sprites import sprites
+from jogo.cenas.cena import FaseBase, TelaRua, TelaCozinha, TelaQuarto
+from jogo.models import NPC
+from jogo.sistemas.dialogo import GerenciadorDialogo
+from jogo.ui.interface import texto
+from jogo.sistemas.sprites import sprites
 
 
 class TelaViagemTempo:
@@ -107,7 +107,7 @@ class TelaCelebracao(TelaCozinha):
                         self.concluiu = True
                     return
                 if self.concluiu:
-                    from main import TelaInicial
+                    from jogo.cenas.menu import TelaInicial
                     self.game.trocar_cena(TelaInicial(self.game))
                     return
 

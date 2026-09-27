@@ -5,7 +5,7 @@ import pygame
 
 class GerenciadorSprites:
     def __init__(self, pasta=None):
-        self.pasta = Path(pasta) if pasta else Path(__file__).parent / 'assets' / 'sprites'
+        self.pasta = Path(pasta) if pasta else Path(__file__).resolve().parents[2] / 'assets' / 'sprites'
         self.cache = {}
 
     def desenhar(self, tela, nome, rect, cor):

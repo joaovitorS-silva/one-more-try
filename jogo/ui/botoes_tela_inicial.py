@@ -1,5 +1,5 @@
 import pygame
-from settings import PRETO, BRANCO, CINZA
+from jogo.settings import PRETO, BRANCO, CINZA
 
 _fonte = None
 

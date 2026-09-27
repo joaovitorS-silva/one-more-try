@@ -6,12 +6,12 @@ Para diálogos, veja dialogo.py
 Para objetos de cenário (portas, móveis, banco), veja objetos_cenario.py
 """
 import pygame
-from settings import LARGURA, ALTURA, FONTE_NOME, BRANCO
-from models import Pelezin, NPC
-from sprites import sprites
-from interface import texto
-from dialogo import GerenciadorDialogo
-from objetos_cenarios import ObjetoCenario, Porta, Banco, Chao
+from jogo.settings import LARGURA, ALTURA, FONTE_NOME, BRANCO
+from jogo.models import Pelezin, NPC
+from jogo.sistemas.sprites import sprites
+from jogo.ui.interface import texto
+from jogo.sistemas.dialogo import GerenciadorDialogo
+from jogo.objetos.objetos_cenarios import ObjetoCenario, Porta, Banco, Chao
 
 
 class FaseBase:
@@ -335,5 +335,5 @@ class TelaCorredor(FaseBase):
             self.dialogo_amigos.desenhar(tela)
 
     def proxima_fase(self):
-        from sala_prova import TelaSalaProva
+        from jogo.cenas.sala_prova import TelaSalaProva
         self.game.trocar_cena(TelaSalaProva(self.game))

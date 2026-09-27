@@ -1,28 +1,9 @@
-"""
-Gerenciador de diálogos do jogo — reutilizável para qualquer cena.
-"""
 import pygame
-from interface import texto
-from settings import FONTE_NOME, ALTURA, LARGURA
+from jogo.ui.interface import texto
+from jogo.settings import FONTE_NOME, ALTURA, LARGURA
 
 
 class GerenciadorDialogo:
-    """Gerencia a exibição de diálogos em estilo RPG.
-    
-    Uso:
-        dialogo = GerenciadorDialogo([
-            "PeLezin: Oi professor!",
-            "Prof. Joaildo: Olá, PeLezin!",
-        ])
-        
-        # Em processar_eventos:
-        if evento.type == pygame.MOUSEBUTTONDOWN:
-            dialogo.proximo()
-            
-        # Em desenhar:
-        if dialogo.ativo:
-            dialogo.desenhar(tela)
-    """
     
     def __init__(self, linhas):
         """Inicializa o gerenciador com uma lista de linhas de diálogo."""

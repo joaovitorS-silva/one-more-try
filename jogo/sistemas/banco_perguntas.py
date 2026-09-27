@@ -14,13 +14,13 @@ das perguntas no futuro (ex: outro arquivo, banco de dados, API) sem
 tocar na tela da prova.
 """
 import json
-import os
+from pathlib import Path
 import random
 
-from models import PerguntaFacil, PerguntaMedia, PerguntaDificil
+from jogo.models import PerguntaFacil, PerguntaMedia, PerguntaDificil
 
 # Caminho absoluto para não depender de onde o jogo foi executado
-CAMINHO_QUESTOES = os.path.join(os.path.dirname(__file__), "data", "questions.json")
+CAMINHO_QUESTOES = Path(__file__).resolve().parents[2] / "data" / "questions.json"
 
 # Mapeia a chave usada no JSON para a classe de Questao correspondente
 _CLASSES_POR_DIFICULDADE = {
