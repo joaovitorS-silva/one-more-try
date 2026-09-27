@@ -287,3 +287,24 @@ transição visual; o professor e os colegas mantêm movimentos discretos ao fun
 O jogo abre em **tela cheia**, mantendo a proporção original de 800×600.
 Em monitores mais largos, podem aparecer faixas laterais. Os cliques são
 ajustados automaticamente à escala da imagem; **ESC** continua pausando o jogo.
+
+### Sprite do PeLezin
+
+`assets/sprites/personagem_principal.png` contém 16 poses, em quatro linhas:
+frente, costas, esquerda e direita. A primeira pose é usada parado; as demais
+animam a caminhada. O recorte considera as margens da folha fornecida e preserva
+a proporção do personagem. A colisão continua em 33×33, com os pés ancorados ao
+cenário. Durante a prova, o personagem aparece de costas, voltado para o quadro.
+
+
+O quarto usa `assets/sprites/quarto.png` como fundo. As áreas de interação e
+colisão acompanham a cama, o fliperama, a porta e a escrivaninha da imagem,
+sem sobrepor os antigos retângulos. O relógio investigável continua disponível.
+Se a imagem não estiver disponível, o cenário simples é usado como alternativa.
+
+
+No quarto ilustrado, PeLezin tem escala própria (152 px de altura), colisão
+nos pés e caminhada limitada ao piso. As bases da cama, fliperama, escrivaninha,
+mochila e guarda-roupa bloqueiam a passagem. As interações são alcançadas pela
+frente dos móveis; o relógio usa o despertador do criado-mudo. O retorno da
+cozinha coloca o personagem em frente à porta, em uma posição livre.

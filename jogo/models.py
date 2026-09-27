@@ -20,6 +20,23 @@ class Pelezin(Personagem):
         self.estado_do_tempo = estado_do_tempo  # ex: "sol", "chuva"
         self.pontuacao     = pontuacao
 
+        self.direcao = 'baixo'
+        self.tempo_animacao = 0
+        self.quadro_animacao = 0
+
+    def atualizar_animacao(self, deslocamento, dt):
+        dx, dy = deslocamento
+        if not dx and not dy:
+            self.tempo_animacao = 0
+            self.quadro_animacao = 0
+            return
+        direcao = ('direita' if dx > 0 else 'esquerda') if abs(dx) > abs(dy) else ('baixo' if dy > 0 else 'cima')
+        if direcao != self.direcao:
+            self.tempo_animacao = 0
+        self.direcao = direcao
+        self.tempo_animacao = (self.tempo_animacao + dt) % 0.48
+        self.quadro_animacao = (1, 2, 3, 2)[int(self.tempo_animacao / 0.12)]
+
 
 class Professor(Personagem):
     def __init__(self, velocidade, x, y, vida_maxima=100):

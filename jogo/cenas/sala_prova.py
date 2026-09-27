@@ -80,6 +80,7 @@ class TelaSalaProva(FaseExploracao):
         self.jogador.rect.topleft = self.posicao_antes_de_sentar
 
     def mover_na_sala(self):
+        anterior = self.jogador.rect.topleft
         teclas = pygame.key.get_pressed()
         direcao = pygame.Vector2(int(teclas[pygame.K_d]) - int(teclas[pygame.K_a]),
                                  int(teclas[pygame.K_s]) - int(teclas[pygame.K_w]))
@@ -97,6 +98,7 @@ class TelaSalaProva(FaseExploracao):
                     borda = ('left' if passo > 0 else 'right') if eixo == 'x' else ('top' if passo > 0 else 'bottom')
                     setattr(self.jogador.rect, lado, getattr(obstaculo, borda))
         self.jogador.rect.clamp_ip(pygame.Rect(15, 155, 770, 355))
+        self.jogador.atualizar_animacao((self.jogador.rect.x - anterior[0], self.jogador.rect.y - anterior[1]), self.game.dt)
 
     def iniciar_prova(self, assunto):
         if self.prova is not None:
@@ -178,6 +180,8 @@ class TelaSalaProva(FaseExploracao):
 
     def atualizar(self):
         if self.prova is None and not self.escolhendo:
+            if self.dialogo.ativo:
+                self.jogador.atualizar_animacao((0, 0), self.game.dt)
             if not self.dialogo.ativo:
                 self.ambiente_tempo += self.game.dt
                 self.professor.rect.x = round(345 + 105 * math.sin(self.ambiente_tempo * 0.45))
@@ -229,7 +233,7 @@ class TelaSalaProva(FaseExploracao):
             rect = colega.rect.move(0, round(math.sin(self.ambiente_tempo * 2 + i) * 2))
             sprites.desenhar(tela, colega.nome.lower(), rect, [(102, 163, 206), (195, 132, 163), (221, 175, 90)][i % 3])
             texto(tela, colega.nome, rect.x - 4, rect.y - 22, 16)
-        sprites.desenhar(tela, 'pelezin', self.jogador.rect, (70, 225, 155))
+        sprites.desenhar_jogador(tela, self.jogador)
         for cadeira in self.cadeiras:
             cadeira.desenhar(tela, self.fonte)
         if not self.dialogo.ativo and not self.escolhendo and self.prova is None:
@@ -241,13 +245,10 @@ class TelaSalaProva(FaseExploracao):
                 caixa = pygame.Rect(colega.rect.x - 45, colega.rect.y - 65, 200, 33)
                 pygame.draw.rect(tela, (244, 239, 220), caixa, border_radius=9)
                 texto(tela, frase, caixa.x + 10, caixa.y + 7, 16, (43, 58, 65))
-        texto(tela, '5. Sala de prova', 20, 12, 26, (30, 49, 56))
-        texto(tela, 'Converse com a turma. Sente na sua carteira quando estiver pronto.', 20, 45, 17, (30, 49, 56))
 
     def desenhar(self, tela):
         if self.prova is None and not self.escolhendo:
             self.desenhar_sala(tela)
-            texto(tela, 'WASD: mover • E: interagir • TAB: caderno • ESC: pausa', 20, 570, 17)
             alvo = self.alvo()
             if alvo and not self.dialogo.ativo:
                 objeto = alvo[0]
@@ -287,7 +288,7 @@ class TelaSalaProva(FaseExploracao):
             nome = 'pelezin' if jogador else self.colegas[i if i < 3 else i - 1].nome.lower()
             oscilacao = round(math.sin(self.ambiente_tempo * 1.8 + i))
             rect = pygame.Rect(x + 34, y - 29 + oscilacao, 26, 30)
-            sprites.desenhar(tela, nome, rect, (70, 225, 155) if jogador else [(99, 163, 205), (192, 133, 163), (219, 173, 94)][i % 3])
+            sprites.desenhar(tela, nome, rect, (70, 225, 155) if jogador else [(99, 163, 205), (192, 133, 163), (219, 173, 94)][i % 3], direcao='cima')
             pygame.draw.rect(tela, (60, 54, 47), (x, y + 4, 96, 29), border_radius=5)
             pygame.draw.rect(tela, (184, 140, 88), (x, y, 96, 27), border_radius=5)
             pygame.draw.rect(tela, (242, 234, 213), (x + 32, y + 4, 28, 18), border_radius=2)

@@ -66,7 +66,6 @@ class TelaVoltaCorredor(FaseBase):
         super().desenhar(tela)
         sprites.desenhar(tela, 'ana', self.colega.rect, (90, 140, 200))
         texto(tela, 'Ana • E para conversar', 300, 265, 18)
-        texto(tela, f'Nota final: {self.game.nota} • Siga à direita para voltar para casa.', 30, 90)
         if self.dialogo.ativo:
             self.dialogo.desenhar(tela)
 

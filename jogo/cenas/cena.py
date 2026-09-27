@@ -44,6 +44,7 @@ class FaseBase:
 
     def atualizar(self):
         """Atualiza posição do jogador com entrada do teclado."""
+        anterior = self.jogador.rect.topleft
         teclas = pygame.key.get_pressed()
         direcao = pygame.Vector2(int(teclas[pygame.K_d]) - int(teclas[pygame.K_a]),
                                  int(teclas[pygame.K_s]) - int(teclas[pygame.K_w]))
@@ -68,6 +69,7 @@ class FaseBase:
                             self.jogador.rect.top = obstaculo.bottom
         limite_y = self.chao.rect.top if self.chao else ALTURA
         self.jogador.rect.clamp_ip(pygame.Rect(0, 65, LARGURA, limite_y - 65))
+        self.jogador.atualizar_animacao((self.jogador.rect.x - anterior[0], self.jogador.rect.y - anterior[1]), self.game.dt)
         if self.usa_transicao_automatica and self.jogador.rect.right >= LARGURA:
             self.proxima_fase()
 
@@ -83,10 +85,7 @@ class FaseBase:
     def desenhar(self, tela):
         """Desenha a fase básica."""
         tela.fill(self.cor_fundo)
-        sprites.desenhar(tela, "pelezin", self.jogador.rect, (0, 255, 0))
-        texto_surf = self._fonte_nome_fase.render(self.nome_fase, True, BRANCO)
-        tela.blit(texto_surf, (20, 20))
-        texto(tela, "WASD: mover | E perto de pessoas/portas | ENTER: diálogo | ESC: pausa", 20, 555, 17)
+        sprites.desenhar_jogador(tela, self.jogador)
 
     def proxima_fase(self):
         """Chamado quando o jogador avança. Sobrescrever em subclasses."""
@@ -104,6 +103,8 @@ class FaseExploracao(FaseBase):
         self.interacoes = []
         self.dialogo = GerenciadorDialogo([])
         self.desafio = None
+        self.imagem_fundo = None
+        self.objetos_no_fundo = []
 
     def adicionar(self, objeto, acao, novidade=lambda: False):
         self.objetos.append(objeto)
@@ -117,7 +118,7 @@ class FaseExploracao(FaseBase):
     def ir(self, classe, voltando=False):
         cena = classe(self.game)
         if voltando:
-            cena.jogador.rect.topleft = (650, 310)
+            cena.jogador.rect.topleft = getattr(cena, 'posicao_retorno', (650, 310))
         self.game.trocar_cena(cena)
 
     def alvo(self, evento=None):
@@ -126,7 +127,7 @@ class FaseExploracao(FaseBase):
             candidatos = [item for item in candidatos if item[0].rect.collidepoint(evento.pos)]
         if not candidatos:
             return None
-        return min(candidatos, key=lambda item: pygame.Vector2(item[0].rect.center).distance_squared_to(self.jogador.rect.center))
+        return min(candidatos, key=lambda item: pygame.Vector2(getattr(item[0], 'area_interacao', item[0].rect).center).distance_squared_to(self.jogador.rect.center))
 
     def processar_eventos(self, eventos):
         for evento in eventos:
@@ -145,14 +146,20 @@ class FaseExploracao(FaseBase):
 
     def atualizar(self):
         if self.dialogo.ativo or (self.desafio and self.desafio.ativo):
+            self.jogador.atualizar_animacao((0, 0), self.game.dt)
             return
         super().atualizar()
 
     def desenhar(self, tela):
-        tela.fill(self.cor_fundo)
-        if self.chao:
-            self.chao.desenhar(tela)
+        if self.imagem_fundo is not None:
+            tela.blit(self.imagem_fundo, (0, 0))
+        else:
+            tela.fill(self.cor_fundo)
+            if self.chao:
+                self.chao.desenhar(tela)
         for objeto in self.objetos:
+            if objeto in self.objetos_no_fundo:
+                continue
             if isinstance(objeto, NPC):
                 sprites.desenhar(tela, objeto.nome.lower(), objeto.rect, (85, 155, 185))
                 texto(tela, objeto.nome, objeto.rect.x - 5, objeto.rect.y - 24, 17)
@@ -162,11 +169,11 @@ class FaseExploracao(FaseBase):
             if novidade():
                 pygame.draw.circle(tela, (250, 207, 105), (objeto.rect.centerx, objeto.rect.top - 38), 10)
                 texto(tela, '!', objeto.rect.centerx - 3, objeto.rect.top - 49, 18, (30, 35, 45))
-        sprites.desenhar(tela, 'pelezin', self.jogador.rect, (70, 225, 155))
-        texto(tela, self.nome_fase, 20, 15, 25)
-        objetivo = 'Você passou! Volte para casa e celebre com sua família.' if self.game.nota >= 50 else self.game.progresso.objetivo
-        texto(tela, objetivo, 20, 48, 17, largura=760)
-        texto(tela, 'WASD: mover • E: interagir • TAB: caderno • ESC: pausa', 20, 570, 17)
+        if self.imagem_fundo is not None:
+            sombra = pygame.Rect(0, 0, 42, 9)
+            sombra.midbottom = self.jogador.rect.midbottom
+            pygame.draw.ellipse(tela, (68, 45, 33), sombra)
+        sprites.desenhar_jogador(tela, self.jogador)
         alvo = self.alvo()
         if alvo and not self.dialogo.ativo:
             nome = getattr(alvo[0], 'nome', getattr(alvo[0], 'rotulo', ''))
@@ -188,6 +195,64 @@ class TelaQuarto(FaseExploracao):
         self.porta = self.adicionar(Porta(440, 330, 60, 170, 'Cozinha >'), self.proxima_fase)
         self.escrivaninha = self.adicionar(ObjetoCenario('Escrivaninha', (125, 90, 55), 160, 155, 150, 65), self.estudar, lambda: 'estudo' not in game.progresso.memorias)
         self.relogio = self.adicionar(ObjetoCenario('Relógio 07:10', (45, 75, 90), 575, 145, 80, 65), self.investigar, lambda: ('relogio_repetido' if game.tentativa > 1 else 'relogio') not in game.progresso.memorias)
+        self.imagem_fundo = sprites.carregar_fundo('quarto', (LARGURA, ALTURA))
+        if self.imagem_fundo is not None:
+            # Áreas alinhadas aos móveis pintados no fundo de 800x600.
+            self.cama.rect = pygame.Rect(32, 365, 275, 92)
+            self.fliperama.rect = pygame.Rect(322, 252, 96, 196)
+            self.porta.rect = pygame.Rect(427, 192, 114, 255)
+            self.escrivaninha.rect = pygame.Rect(582, 351, 168, 103)
+            self.relogio.rect = pygame.Rect(28, 379, 29, 20)
+            self.objetos_no_fundo = [self.cama, self.fliperama, self.porta, self.escrivaninha, self.relogio]
+            self.chao.rect.top = 555
+            # O retângulo representa os pés, não toda a altura do sprite.
+            self.jogador.rect = pygame.Rect(130, 484, 34, 16)
+            self.jogador.altura_visual = 152
+            self.jogador.velocidade = 3
+            self.posicao_retorno = (466, 484)
+            self.area_caminhada = pygame.Rect(16, 438, 768, 74)
+            self.obstaculos = [
+                pygame.Rect(0, 435, 307, 27),       # cama e criado-mudo
+                pygame.Rect(322, 430, 96, 24),      # base do fliperama
+                pygame.Rect(582, 434, 168, 23),     # escrivaninha e cadeira
+                pygame.Rect(546, 439, 38, 20),      # mochila
+                pygame.Rect(750, 430, 50, 50),      # guarda-roupa
+            ]
+            self.fliperama.area_interacao = pygame.Rect(327, 459, 86, 43)
+            self.porta.area_interacao = pygame.Rect(435, 453, 100, 49)
+            self.escrivaninha.area_interacao = pygame.Rect(602, 463, 125, 39)
+            self.relogio.area_interacao = pygame.Rect(20, 466, 65, 36)
+
+    def perto(self, objeto):
+        if self.imagem_fundo is None:
+            return super().perto(objeto)
+        area = getattr(objeto, 'area_interacao', objeto.rect)
+        return self.jogador.rect.inflate(16, 16).colliderect(area)
+
+    def atualizar(self):
+        if self.imagem_fundo is None:
+            return super().atualizar()
+        if self.dialogo.ativo or (self.desafio and self.desafio.ativo):
+            self.jogador.atualizar_animacao((0, 0), self.game.dt)
+            return
+        antes = self.jogador.rect.topleft
+        teclas = pygame.key.get_pressed()
+        direcao = pygame.Vector2(int(teclas[pygame.K_d]) - int(teclas[pygame.K_a]),
+                                 int(teclas[pygame.K_s]) - int(teclas[pygame.K_w]))
+        if direcao.length_squared():
+            direcao = direcao.normalize() * self.jogador.velocidade * 60 * self.game.dt
+        for eixo in ('x', 'y'):
+            passo = round(getattr(direcao, eixo))
+            # Subpassos impedem atravessar uma base fina com um quadro lento.
+            sinal = 1 if passo > 0 else -1
+            for _ in range(abs(passo)):
+                setattr(self.jogador.rect, eixo, getattr(self.jogador.rect, eixo) + sinal)
+                if not self.area_caminhada.contains(self.jogador.rect) or any(self.jogador.rect.colliderect(o) for o in self.obstaculos):
+                    setattr(self.jogador.rect, eixo, getattr(self.jogador.rect, eixo) - sinal)
+                    break
+        self.jogador.atualizar_animacao((self.jogador.rect.x - antes[0], self.jogador.rect.y - antes[1]), self.game.dt)
+
+
 
     def estudar(self):
         from jogo.ui.desafio import Desafio

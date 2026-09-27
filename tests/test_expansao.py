@@ -27,7 +27,7 @@ class ExpansaoTest(unittest.TestCase):
         pygame.quit()
 
     def interagir(self, cena, objeto):
-        cena.jogador.rect.center = objeto.rect.center
+        cena.jogador.rect.center = getattr(objeto, 'area_interacao', objeto.rect).center
         cena.processar_eventos([tecla(pygame.K_e)])
 
     def fechar_dialogo(self, cena):
