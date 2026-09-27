@@ -1,4 +1,3 @@
-"""Memórias duram uma partida; objetos e favores recomeçam a cada manhã."""
 class Progresso:
     def __init__(self):
         self.memorias = {}

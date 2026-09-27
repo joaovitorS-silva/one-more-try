@@ -1,4 +1,3 @@
-"""Prova curta com nota, dificuldade progressiva e loja de dicas."""
 import math
 import re
 import pygame
@@ -262,7 +261,6 @@ class TelaSalaProva(FaseExploracao):
         self.desenhar_prova(tela)
 
     def desenhar_ambiente_prova(self, tela):
-        """Enquadramento da turma durante a prova, sem mover as colisões da sala."""
         pygame.draw.rect(tela, (178, 197, 191), (0, 58, 800, 254))
         pygame.draw.rect(tela, (95, 115, 124), (0, 166, 800, 146))
         for y in range(170, 312, 35):

@@ -1,18 +1,3 @@
-"""
-Banco de perguntas da prova.
-
-Responsável por:
-- Carregar o banco de questões de data/questions.json
-- Sortear aleatoriamente N perguntas de cada dificuldade (sem repetição)
-- Devolver a prova já montada na ordem fácil -> média -> difícil,
-  seguindo a progressão de dificuldade descrita no README.
-
-Mantido separado de sala_prova.py de propósito: aqui só cuidamos dos
-dados (de onde vêm as perguntas e como são sorteadas); sala_prova.py
-cuida da interface/lógica de jogo. Isso deixa mais fácil trocar a fonte
-das perguntas no futuro (ex: outro arquivo, banco de dados, API) sem
-tocar na tela da prova.
-"""
 import json
 from pathlib import Path
 import random
@@ -31,13 +16,11 @@ _CLASSES_POR_DIFICULDADE = {
 
 
 def _carregar_banco_bruto():
-    """Lê o questions.json e devolve o dicionário cru (facil/media/dificil)."""
     with open(CAMINHO_QUESTOES, encoding="utf-8") as arquivo:
         return json.load(arquivo)
 
 
 def _construir_questoes(lista_dados, classe_questao):
-    """Converte uma lista de dicts do JSON em objetos Questao (Facil/Media/Dificil)."""
     return [
         classe_questao(
             opcoes=dados["opcoes"],
@@ -49,12 +32,6 @@ def _construir_questoes(lista_dados, classe_questao):
 
 
 def carregar_todas_as_questoes():
-    """Carrega o banco inteiro já convertido em objetos Questao, por dificuldade.
-
-    Devolve um dict: {"facil": [...], "media": [...], "dificil": [...]}
-    Útil se algum dia quisermos, por exemplo, mostrar quantas perguntas
-    existem no banco, ou validar o JSON num teste.
-    """
     banco_bruto = _carregar_banco_bruto()
     return {
         dificuldade: _construir_questoes(banco_bruto.get(dificuldade, []), classe)
@@ -63,16 +40,6 @@ def carregar_todas_as_questoes():
 
 
 def sortear_prova(qtd_facil=5, qtd_media=5, qtd_dificil=5, assunto=None):
-    """Monta uma prova sorteando perguntas aleatórias do banco, sem repetição.
-
-    A ordem final é sempre fácil -> média -> difícil (progressão de
-    dificuldade), mas QUAIS perguntas de cada nível aparecem muda a
-    cada prova, já que são sorteadas com random.sample().
-
-    Levanta ValueError se o banco não tiver perguntas suficientes para
-    a quantidade pedida em alguma dificuldade — melhor descobrir isso
-    na inicialização do que travar o jogo no meio da prova.
-    """
     banco = carregar_todas_as_questoes()
     if assunto:
         banco_bruto = _carregar_banco_bruto()

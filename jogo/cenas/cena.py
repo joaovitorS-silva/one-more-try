@@ -1,10 +1,3 @@
-"""
-Fases do jogo - telas de transição (Quarto, Cozinha, Ponto de Ônibus, Pátio).
-
-Para a sala de prova, veja sala_prova.py
-Para diálogos, veja dialogo.py
-Para objetos de cenário (portas, móveis, banco), veja objetos_cenario.py
-"""
 import pygame
 from jogo.settings import LARGURA, ALTURA, FONTE_NOME, BRANCO
 from jogo.models import Pelezin, NPC
@@ -15,16 +8,6 @@ from jogo.objetos.objetos_cenarios import ObjetoCenario, Porta, Banco, Chao
 
 
 class FaseBase:
-    """Classe base para todas as fases do jogo.
-
-    Características:
-    - Gerencia o jogador (PeLezin)
-    - Controla movimentação com WASD
-    - Por padrão, avança de fase sozinha quando o jogador sai pela borda
-      direita da tela — algumas fases (com porta clicável) desligam isso
-      usando `usa_transicao_automatica = False`
-    - Fornece método base para desenhar
-    """
 
     usa_transicao_automatica = True
 
@@ -39,11 +22,9 @@ class FaseBase:
         self._fonte_nome_fase = pygame.font.SysFont(FONTE_NOME, 24, bold=True)
 
     def processar_eventos(self, eventos):
-        """Processa eventos. Sobrescrever em subclasses se necessário."""
         pass
 
     def atualizar(self):
-        """Atualiza posição do jogador com entrada do teclado."""
         anterior = self.jogador.rect.topleft
         teclas = pygame.key.get_pressed()
         direcao = pygame.Vector2(int(teclas[pygame.K_d]) - int(teclas[pygame.K_a]),
@@ -83,17 +64,14 @@ class FaseBase:
                 and objeto.rect.collidepoint(evento.pos)))
 
     def desenhar(self, tela):
-        """Desenha a fase básica."""
         tela.fill(self.cor_fundo)
         sprites.desenhar_jogador(tela, self.jogador)
 
     def proxima_fase(self):
-        """Chamado quando o jogador avança. Sobrescrever em subclasses."""
         pass
 
 
 class FaseExploracao(FaseBase):
-    """Interações escolhem o alvo mais próximo; diálogos bloqueiam movimento."""
     usa_transicao_automatica = False
 
     def __init__(self, game, cor, nome):
@@ -251,7 +229,6 @@ class TelaQuarto(FaseExploracao):
                     setattr(self.jogador.rect, eixo, getattr(self.jogador.rect, eixo) - sinal)
                     break
         self.jogador.atualizar_animacao((self.jogador.rect.x - antes[0], self.jogador.rect.y - antes[1]), self.game.dt)
-
 
 
     def estudar(self):

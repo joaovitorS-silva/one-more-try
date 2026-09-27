@@ -5,7 +5,6 @@ from jogo.ui.interface import texto
 
 
 class TelaInicial:
-    """Menu desenhado com formas e fontes, sem imagens externas."""
     def __init__(self, game):
         self.game = game
         self.ajuda = False

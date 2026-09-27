@@ -8,7 +8,6 @@ from jogo.ui.caderno import desenhar_caderno
 
 
 class Game:
-    """Mantém a troca direta de cenas da base original."""
     def __init__(self):
         pygame.init()
         # SCALED mantém as coordenadas do jogo e do mouse em 800x600.
@@ -123,5 +122,3 @@ class Game:
 
     def sair(self):
         self.rodando = False
-
-

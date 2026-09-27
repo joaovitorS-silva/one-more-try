@@ -5,14 +5,13 @@ _fonte = None
 
 
 def _get_fonte():
-    """Inicializa a fonte apenas quando o pygame já estiver rodando."""
     global _fonte
     if _fonte is None:
         _fonte = pygame.font.SysFont("arial", 32, bold=True)
     return _fonte
 
 
-class Botao: 
+class Botao:
     def __init__(self, texto, x, y, largura, altura):
         self.texto  = texto
         self.rect   = pygame.Rect(x, y, largura, altura)

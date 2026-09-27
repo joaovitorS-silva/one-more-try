@@ -1,4 +1,3 @@
-"""Interface compacta da prova: texto ajustado e alternativas em duas colunas."""
 from functools import lru_cache
 import pygame
 from jogo.ui.botoes_tela_inicial import Botao
@@ -26,7 +25,6 @@ def fonte(tamanho, negrito=False):
 
 
 def ajustar_texto(mensagem, largura, altura, tamanho=21):
-    """Quebra também palavras longas; reduz a fonte somente quando necessário."""
     for pontos in range(tamanho, 10, -1):
         f = fonte(pontos)
         linhas = []

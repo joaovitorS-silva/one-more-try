@@ -48,32 +48,25 @@ class Professor(Personagem):
         self.x_min            = 100  # Limite esquerdo de patrulha
         self.x_max            = 700  # Limite direito de patrulha
         self.campo_visao_raio = 150  # Raio do campo de visão
-    
+
     def atualizar(self, delta_time=1):
-        """Atualiza posição do professor na patrulha."""
         self.rect.x += self.velocidade * self.direcao * delta_time
-        
+
         # Inverte direção ao atingir limites
         if self.rect.x <= self.x_min or self.rect.x >= self.x_max:
             self.direcao *= -1
-    
+
     def receber_dano(self, dano):
-        """Diminui vida do professor."""
         self.vida_atual = max(0, self.vida_atual - dano)
-    
+
     def recuperar_vida(self, quantidade):
-        """Aumenta vida do professor (quando aluno erra)."""
         self.vida_atual = min(self.vida_maxima, self.vida_atual + quantidade)
-    
+
     def esta_morto(self):
-        """Retorna True se professor perdeu toda a vida."""
         return self.vida_atual <= 0
 
 
 class NPC(Personagem):
-    """NPC genérico e parado — usado pra personagens secundários que só
-    conversam (mãe, colegas de turma, etc.), sem precisar criar uma classe
-    nova pra cada um."""
     def __init__(self, nome, x, y, largura=32, altura=32):
         super().__init__(nome, 0, x, y)  # velocidade 0: esses NPCs não andam
         self.rect = pygame.Rect(x, y, largura, altura)
@@ -82,13 +75,6 @@ class NPC(Personagem):
 # ── Sistema de Questões ───────────────────────────────────────────────────────
 
 class Questao:
-    """Classe base para todas as questões da prova.
-
-    enunciado e correta são obrigatórios no construtor — antes eram atribuídos
-    por fora depois do `PerguntaFacil(...)`, então nada impedia esquecer de
-    setar um dos dois e a questão quebrar (ou pior: rodar com correta=None)
-    só quando o jogador clicasse numa alternativa.
-    """
     def __init__(self, dificuldade, pontuacao_acerto, pontuacao_erro, opcoes, enunciado, correta):
         self.dificuldade      = dificuldade
         self.pontuacao_acerto = pontuacao_acerto
@@ -134,7 +120,6 @@ class Prova:
             self.pontuacao_total += questao.pontuacao_erro
 
 class LojaDicas:
-    """Créditos separados da nota: dois acertos seguidos rendem uma dica."""
     def __init__(self):
         self.creditos = 0
         self.sequencia = 0

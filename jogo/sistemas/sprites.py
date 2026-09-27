@@ -1,4 +1,3 @@
-"""Imagens opcionais: sem arquivo, preserva os retângulos do protótipo."""
 from pathlib import Path
 import pygame
 

@@ -1,4 +1,3 @@
-"""Desfechos com as mesmas cenas e diálogos simples da jornada."""
 import math
 import pygame
 from jogo.cenas.cena import FaseBase, TelaRua, TelaCozinha, TelaQuarto

@@ -1,4 +1,3 @@
-"""Texto com quebra de linha, compartilhado por menus e prova."""
 import pygame
 
 
