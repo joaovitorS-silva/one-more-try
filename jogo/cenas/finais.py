@@ -20,9 +20,7 @@ class TelaViagemTempo:
     def atualizar(self):
         self.tempo += self.game.dt
         if self.tempo >= 4:
-            self.game.tentativa += 1
-            self.game.nota = 0
-            self.game.trocar_cena(TelaQuarto(self.game))
+            self.game.reiniciar_manha()
 
     def desenhar(self, tela):
         tela.fill((23, 17, 30))
@@ -80,6 +78,9 @@ class TelaRuaVolta(TelaRua):
     def __init__(self, game):
         super().__init__(game)
         self.nome_fase = '7. Caminho de casa →'
+        self.objetos = [self.placa_onibus, self.banco, self.saida]
+        self.interacoes = [item for item in self.interacoes if item[0] in (self.banco, self.saida)]
+        self.saida.rotulo = 'Casa →'
         self.dialogo_banco.linhas = ['PeLezin: A prova passou. Agora posso respirar!']
 
     def proxima_fase(self):
@@ -90,6 +91,8 @@ class TelaCelebracao(TelaCozinha):
     def __init__(self, game):
         super().__init__(game)
         self.nome_fase = '8. Lar, doce lar!'
+        self.objetos = [self.mae]
+        self.interacoes = []
         self.dialogo_mae.linhas = [
             f'PeLezin: Mãe, passei! Tirei {game.nota} pontos!',
             'Mãe: Eu sabia que você conseguiria. Estamos orgulhosos!',

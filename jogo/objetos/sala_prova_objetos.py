@@ -14,11 +14,36 @@ class MesaProfessor:
     
     def desenhar(self, tela, fonte):
         """Desenha a mesa com rótulo."""
-        pygame.draw.rect(tela, (70, 50, 30), self.rect, border_radius=8)
-        pygame.draw.rect(tela, (100, 100, 255), self.rect, width=3, border_radius=8)
+        pygame.draw.rect(tela, (82, 61, 43), self.rect.move(0, 5), border_radius=8)
+        pygame.draw.rect(tela, (156, 112, 70), self.rect, border_radius=8)
         
-        txt = fonte.render("Mesa do Professor", True, (100, 100, 255))
-        tela.blit(txt, txt.get_rect(center=self.rect.center))
+        txt = fonte.render("Mesa do professor", True, (245, 236, 211))
+        tela.blit(txt, txt.get_rect(midtop=(self.rect.centerx, self.rect.bottom + 7)))
+
+
+class Carteira:
+    """Carteira com cadeira, material e mochila; a do jogador fica marcada."""
+
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x, y, 80, 43)
+        self.rotulo = 'Carteira'
+        self.destacada = False
+
+    def desenhar(self, tela, fonte):
+        x, y = self.rect.topleft
+        pygame.draw.rect(tela, (52, 66, 77), (x + 18, y - 5, 44, 16), border_radius=5)
+        pygame.draw.rect(tela, (67, 52, 41), self.rect.move(0, 5), border_radius=5)
+        pygame.draw.rect(tela, (183, 139, 86), self.rect, border_radius=5)
+        pygame.draw.rect(tela, (239, 230, 207), (x + 24, y + 8, 30, 24), border_radius=2)
+        pygame.draw.line(tela, (106, 137, 160), (x + 30, y + 15), (x + 48, y + 15), 2)
+        pygame.draw.line(tela, (208, 162, 53), (x + 61, y + 10), (x + 58, y + 30), 3)
+        if self.destacada:
+            pygame.draw.rect(tela, (251, 218, 116), self.rect.inflate(6, 6), 3, border_radius=7)
+            legenda = fonte.render('Sua carteira', True, (255, 238, 174))
+            tela.blit(legenda, legenda.get_rect(midtop=(self.rect.centerx, y + 51)))
+        else:
+            pygame.draw.rect(tela, (67, 86, 118), (x + 65, y + 26, 22, 29), border_radius=6)
+            pygame.draw.rect(tela, (120, 150, 173), (x + 69, y + 39, 14, 9), 1, border_radius=3)
 
 
 class CadeiraAluno:

@@ -46,9 +46,9 @@ class TelaInicial:
         for botao in self.botoes:
             botao.desenhar(tela)
         if self.ajuda:
-            linhas = ['WASD: mover • E: interagir', 'ENTER: avançar diálogos', '1–4 ou mouse: responder', 'H: comprar dica • ESC: pausar', 'Meta: 50 pontos. Com −30, o dia reinicia.', '9 questões • até 90 s de prova']
+            linhas = ['WASD: mover • E: interagir', 'ENTER: avançar diálogos', '1–4 ou mouse: responder', 'H: dica • TAB: caderno • ESC: pausa', 'Meta: 50 pontos. Com −30, o dia reinicia.', '9 questões • até 90 s de prova']
         else:
-            linhas = ['Acompanhe PeLezin até a escola.', 'Acerte a prova e volte para celebrar.', 'Se der errado... tente mais uma vez.', 'Partida aproximada: 2 minutos']
+            linhas = ['Acompanhe PeLezin até a escola.', 'Acerte a prova e volte para celebrar.', 'Se der errado... tente mais uma vez.', 'Explore, ajude Ana e descubra o ciclo.']
         for i, linha in enumerate(linhas):
             texto(tela, linha, 390, 315 + i * 34, 17, largura=370)
         texto(tela, 'PROJETO ANUAL • PROGRAMAÇÃO ORIENTADA A OBJETOS', 70, 555, 15, (145, 162, 185))

@@ -105,7 +105,7 @@ Não há inimigos físicos no jogo. Os verdadeiros adversários de PeLezin são:
 2. **Ato 1 — Casa:** Diálogo com a mãe na cozinha (contexto narrativo)
 3. **Ato 2 — Caminho:** Travessia a pé ou de ônibus até a escola
 4. **Ato 3 — Escola:** Interação com NPCs no pátio (clima leve, árvores, flores)
-5. **Ato 4 — Prova:** PeLezin entra na sala → escolhe os assuntos → prova começa com questões fáceis e vai ficando progressivamente mais difícil
+5. **Ato 4 — Prova:** PeLezin explora a sala e conversa com a turma → senta na carteira marcada → escolhe o assunto → prova começa com questões fáceis e vai ficando progressivamente mais difícil
 6. **Ramificação:**
    - **Passou:** Sai da sala → interage no corredor → caminho de volta → cena de celebração em casa
    - **Reprovou:** Game Over → cena dramática da prova queimando → viagem no tempo → retorno ao Ato 1
@@ -118,8 +118,8 @@ Não há inimigos físicos no jogo. Os verdadeiros adversários de PeLezin são:
 - Durante a prova, o personagem está **fixo** — apenas as teclas de resposta funcionam
 - Cada questão só pode ser respondida **uma vez**
 - Itens de dica são **limitados** e custam pontos acumulados na loja
-- O jogador **não pode pular fases** — o storyboard é linear
-- Ao reprovar, **toda a jornada é reiniciada** (mas o banco de perguntas pode variar)
+- Antes da prova, o jogador pode voltar entre quarto, cozinha, rua e pátio para explorar
+- Ao reprovar, a manhã e a missão recomeçam; o caderno mantém descobertas durante a mesma partida
 - Diálogos com NPCs são **opcionais**, mas podem fornecer dicas sobre as questões
 
 ---
@@ -142,10 +142,13 @@ one-more-try/
 │   ├── sistemas/
 │   │   ├── banco_perguntas.py   # Carregamento e sorteio das questões
 │   │   ├── dialogo.py           # Gerenciamento de diálogos
-│   │   └── sprites.py           # Carregamento de imagens opcionais
+│   │   ├── sprites.py           # Carregamento de imagens opcionais
+│   │   └── progresso.py         # Memórias e missão de cada manhã
 │   ├── ui/
 │   │   ├── botoes_tela_inicial.py # Botões reutilizáveis
-│   │   └── interface.py         # Renderização de texto
+│   │   ├── interface.py         # Renderização de texto
+│   │   ├── caderno.py           # Caderno de memórias paginado
+│   │   └── desafio.py           # Exercícios interativos
 │   └── objetos/
 │       ├── objetos_cenarios.py  # Móveis, portas, banco e chão
 │       └── sala_prova_objetos.py # Objetos da sala de aula
@@ -154,7 +157,7 @@ one-more-try/
 ├── data/
 │   └── questions.json          # Banco de perguntas
 ├── tests/
-│   └── test_jogo.py             # Testes das regras e do percurso
+│   └── test_expansao.py         # Missão, memórias, desafios e percurso
 ├── requirements.txt
 └── README.md
 ```
@@ -219,7 +222,7 @@ Não instalar `pygame` e `pygame-ce` juntos no mesmo ambiente virtual.
 - 1–4 ou mouse responde. H compra dica por 5 créditos (até duas dicas).
   Cada dois acertos consecutivos rendem 5 créditos, separados da nota.
 - ESC pausa/continua. Durante a pausa, M volta ao menu.
-- Duração pretendida: cerca de dois minutos, variável com respostas e diálogos.
+- A exploração é livre antes da prova; só a prova possui cronômetro.
 
 Detalhes: [relatório de implementação](RELATORIO_IMPLEMENTACAO.md),
 [contexto para continuidade](CONTEXTO_PROJETO.md) e
@@ -230,3 +233,57 @@ Testes sem abrir janela:
 ```bash
 python -B -m unittest discover -s tests -v
 ```
+
+
+## 15. Primeira expansão — memórias e exploração
+
+- **TAB** abre e fecha o caderno; **← / →** trocam suas páginas. Ele mostra o
+  objetivo atual e as descobertas. Enquanto está aberto, o jogo e o cronômetro
+  da prova ficam pausados. **ESC** também fecha o caderno.
+- No quarto, aproxime-se da **escrivaninha** para revisar herança em POO ou do
+  **fliperama** para resolver uma sequência numérica. Use **1–4** para responder
+  e **ENTER** para sair. Não há penalidade por erro; acertos registram dicas.
+- Investigue o **relógio 07:10**. Depois de uma reprovação, ele, a mãe e Ana
+  revelam novas falas e pistas sobre a repetição do dia.
+- Converse com **Ana no pátio**, procure as folhas perto do banco na rua e
+  devolva-as. Também é possível encontrar as folhas antes de conhecer a missão.
+  A devolução registra uma revisão de Matemática/POO e concede **5 créditos de
+  dica no início da prova**, uma vez naquela manhã, sem alterar a nota.
+- Portas identificadas permitem ir e voltar entre os cenários antes da prova.
+  A entrada na sala é voluntária; os desafios e a missão são opcionais.
+- **E** interage com o alvo próximo mais perto do personagem. Também é possível
+  clicar no objeto estando perto. Indicadores **!** marcam novidades; o rodapé
+  mostra o alvo da interação e avisos confirmam novas descobertas.
+- Na viagem no tempo, o **caderno permanece**, mas as folhas, a missão e as
+  conversas da manhã são reiniciadas. Escolher **Jogar** no menu começa uma
+  partida nova e limpa as memórias. Esta versão não salva progresso em disco.
+
+Verificação automática sem abrir janela:
+
+```bash
+python -B -m unittest discover -s tests -v
+```
+
+### Sala de prova explorável
+
+- Use **WASD** para caminhar e **E** para conversar com Lucas, Bia e o professor.
+- A porta permite voltar ao pátio antes da prova.
+- A carteira dourada abre a escolha de assunto. **BACKSPACE** permite levantar.
+- O cronômetro começa somente após escolher o assunto.
+- Alunos têm pequenas animações e balões de conversa; o professor caminha perto do quadro.
+- Após uma reprovação, conversar com o professor revela uma memória do ciclo.
+
+
+### Interface da prova — painel inferior
+
+Durante a escolha do assunto e a prova, a sala permanece visível acima do painel.
+A barra superior reúne nota, questão e tempo. As alternativas ficam em duas colunas,
+com atalhos **1–4** ou clique, destaque ao passar o mouse e cores de acerto/erro.
+O painel ajusta e quebra textos longos; dicas eliminadas ficam desativadas.
+**H**, **TAB** e **ESC** continuam disponíveis. A troca de questão tem uma breve
+transição visual; o professor e os colegas mantêm movimentos discretos ao fundo.
+
+
+O jogo abre em **tela cheia**, mantendo a proporção original de 800×600.
+Em monitores mais largos, podem aparecer faixas laterais. Os cliques são
+ajustados automaticamente à escala da imagem; **ESC** continua pausando o jogo.
