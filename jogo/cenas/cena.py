@@ -21,8 +21,7 @@ class FaseBase:
         # Fonte criada uma única vez
         self._fonte_nome_fase = pygame.font.SysFont(FONTE_NOME, 24, bold=True)
 
-    def processar_eventos(self, eventos):
-        pass
+    
 
     def atualizar(self):
         anterior = self.jogador.rect.topleft
@@ -67,8 +66,7 @@ class FaseBase:
         tela.fill(self.cor_fundo)
         sprites.desenhar_jogador(tela, self.jogador)
 
-    def proxima_fase(self):
-        pass
+
 
 
 class FaseExploracao(FaseBase):
